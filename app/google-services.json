@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "470659041618",
+    "project_id": "traveloverapp",
+    "storage_bucket": "traveloverapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:470659041618:android:84b990fe4775d5f7bdd28b",
+        "android_client_info": {
+          "package_name": "com.example.nptudttbdd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAS3N2ZgUu9fmvUNON9bJeBI5Bg9P0eKcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
