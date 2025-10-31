@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Material3.DayNight.NoActionBar">
         <activity
-            android:name=".LoginActivity"
+            android:name=".SplashActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Material3.DayNight.NoActionBar">
@@ -22,16 +23,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- Màn hình đăng kys -->
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SearchResultActivity" />
+        <activity android:name=".PlaceDetailActivity" />
+        <activity android:name=".BookingActivity" />
+        <activity android:name=".ReviewActivity" />
+        <activity android:name=".AddPlaceActivity" />
+        <activity android:name=".AdminDashboardActivity" />
+        <activity android:name=".AdminManageUsersActivity" />
+        <activity android:name=".AdminManagePlacesActivity" />
+        <activity android:name=".AdminMessagesActivity" />
+        <activity android:name=".OwnerDashboardActivity" />
+        <activity android:name=".OwnerMessagesActivity" />
+        <activity android:name=".UserProfileActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
-            android:exported="true" />
-
-        <!-- Màn hình quên mật khẩu -->
+        android:exported="false" />
         <activity
             android:name=".ForgotPasswordActivity"
-            android:exported="true" />
-
+        android:exported="false" />
     </application>
-
 </manifest>
