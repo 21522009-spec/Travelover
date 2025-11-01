@@ -66,6 +66,10 @@ public class FirebaseAuthManager {
         this.random = new Random();
     }
 
+    public boolean isOtpEmailConfigured() {
+        return otpEmailSender.isConfigured();
+    }
+
     public FirebaseUser getCurrentUser() {
         return auth.getCurrentUser();
     }
@@ -147,6 +151,11 @@ public class FirebaseAuthManager {
     }
 
     public void requestPasswordResetOtp(@NonNull String email, @NonNull OtpRequestCallback callback) {
+        if (!otpEmailSender.isConfigured()) {
+            callback.onError("Tính năng gửi OTP đang được vô hiệu hóa.");
+            return;
+        }
+
         findUserByEmail(email, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

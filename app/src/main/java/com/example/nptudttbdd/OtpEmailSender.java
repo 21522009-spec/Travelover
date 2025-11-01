@@ -35,15 +35,14 @@ public class OtpEmailSender {
     public void sendOtpEmail(@NonNull String recipientEmail,
                              @NonNull String otp,
                              @NonNull Callback callback) {
-        String senderEmail = BuildConfig.OTP_EMAIL_ADDRESS;
-        String senderPassword = BuildConfig.OTP_EMAIL_PASSWORD;
-
-        if (senderEmail == null || senderEmail.isEmpty()
-                || senderPassword == null || senderPassword.isEmpty()) {
+        if (!isConfigured()) {
             mainHandler.post(() -> callback.onError(
                     "Chưa cấu hình tài khoản email gửi OTP. Vui lòng liên hệ quản trị viên."));
             return;
         }
+
+        String senderEmail = BuildConfig.OTP_EMAIL_ADDRESS;
+        String senderPassword = BuildConfig.OTP_EMAIL_PASSWORD;
 
         executor.execute(() -> {
             try {
@@ -58,6 +57,13 @@ public class OtpEmailSender {
                 mainHandler.post(() -> callback.onError(errorMessage));
             }
         });
+    }
+
+    public boolean isConfigured() {
+        return BuildConfig.OTP_EMAIL_ADDRESS != null
+                && !BuildConfig.OTP_EMAIL_ADDRESS.isEmpty()
+                && BuildConfig.OTP_EMAIL_PASSWORD != null
+                && !BuildConfig.OTP_EMAIL_PASSWORD.isEmpty();
     }
 
     private void sendEmailInternal(@NonNull String recipientEmail,

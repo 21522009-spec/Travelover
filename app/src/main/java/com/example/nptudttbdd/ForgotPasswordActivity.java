@@ -21,6 +21,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     private TextView tvResendOtp;
     private TextView tvBackToLogin;
     private FirebaseAuthManager authManager;
+    private boolean otpEmailConfigured;
 
     private Stage currentStage = Stage.REQUEST_OTP;
     private String currentEmail = "";
@@ -43,8 +44,16 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         tvResendOtp = findViewById(R.id.tvResendOtp);
         tvBackToLogin = findViewById(R.id.tvBackToLogin);
         authManager = new FirebaseAuthManager();
+        otpEmailConfigured = authManager.isOtpEmailConfigured();
 
-        btnReset.setText(R.string.forgot_password_send_otp_button);
+        if (otpEmailConfigured) {
+            btnReset.setText(R.string.forgot_password_send_otp_button);
+        } else {
+            btnReset.setText(R.string.forgot_password_send_reset_link_button);
+            etOtp.setVisibility(View.GONE);
+            tvOtpInfo.setVisibility(View.GONE);
+            tvResendOtp.setVisibility(View.GONE);
+        }
         btnReset.setOnClickListener(v -> {
             if (currentStage == Stage.REQUEST_OTP) {
                 requestOtp();
@@ -70,6 +79,26 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
         setLoading(true);
         currentEmail = AuthInputValidator.getTrimmedText(etEmail);
+
+        if (!otpEmailConfigured) {
+            authManager.sendPasswordReset(currentEmail, new FirebaseAuthManager.CompletionCallback() {
+                @Override
+                public void onComplete() {
+                    setLoading(false);
+                    Toast.makeText(ForgotPasswordActivity.this,
+                            R.string.forgot_password_reset_email_sent,
+                            Toast.LENGTH_LONG).show();
+                    finish();
+                }
+
+                @Override
+                public void onError(@NonNull String message) {
+                    setLoading(false);
+                    Toast.makeText(ForgotPasswordActivity.this, message, Toast.LENGTH_SHORT).show();
+                }
+            });
+            return;
+        }
 
         authManager.requestPasswordResetOtp(currentEmail, new FirebaseAuthManager.OtpRequestCallback() {
             @Override
@@ -109,10 +138,11 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             public void onComplete() {
                 setLoading(false);
                 Toast.makeText(ForgotPasswordActivity.this,
-                        "Xác thực thành công! Email đặt lại mật khẩu đã được gửi.",
+                        R.string.forgot_password_reset_email_sent,
                         Toast.LENGTH_LONG).show();
                 finish();
             }
+
 
             @Override
             public void onError(@NonNull String message) {
