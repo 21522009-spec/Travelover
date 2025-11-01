@@ -9,6 +9,7 @@ public class UserProfile {
     private String name;
     private String email;
     private String role;
+    private String avatarUrl;
 
     // Bắt buộc cần constructor rỗng cho Firebase
     public UserProfile() {
@@ -17,11 +18,13 @@ public class UserProfile {
     public UserProfile(@NonNull String uid,
                        @NonNull String name,
                        @NonNull String email,
-                       @Nullable String role) {
+                       @Nullable String role,
+                       @Nullable String avatarUrl) {
         this.uid = uid;
         this.name = name;
         this.email = email;
         this.role = role;
+        this.avatarUrl = avatarUrl;
     }
 
     @NonNull
@@ -58,5 +61,14 @@ public class UserProfile {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @NonNull
+    public String getAvatarUrl() {
+        return avatarUrl == null ? "" : avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 }

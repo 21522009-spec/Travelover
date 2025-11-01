@@ -72,7 +72,11 @@ public class FirebaseAuthManager {
             return;
         }
 
-        UserProfile profile = new UserProfile(firebaseUser.getUid(), name, email, "user");
+        UserProfile profile = new UserProfile(firebaseUser.getUid(),
+                name,
+                email,
+                "user",
+                "");
         saveUserProfile(profile, new CompletionCallback() {
             @Override
             public void onComplete() {
