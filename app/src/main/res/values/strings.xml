@@ -60,5 +60,10 @@ Các chỉ số đang hiển thị dữ liệu mẫu để minh họa.</string>
     <string name="profile_change_password_title">Hướng dẫn đổi mật khẩu</string>
     <string name="profile_change_password_message">Để đổi mật khẩu, vui lòng sử dụng tính năng quên mật khẩu ở màn hình đăng nhập hoặc liên hệ quản trị viên.</string>
 
+    <string name="forgot_password_send_otp_button">Gửi mã OTP</string>
+    <string name="forgot_password_verify_otp_button">Xác nhận OTP</string>
+    <string name="forgot_password_otp_hint">Nhập mã OTP gồm 6 chữ số</string>
+    <string name="forgot_password_otp_sent">Mã OTP đã được gửi tới %1$s. Vui lòng kiểm tra hộp thư và nhập mã trong vòng 5 phút.</string>
+    <string name="forgot_password_resend">Không nhận được mã? Gửi lại</string>
 
 </resources>
