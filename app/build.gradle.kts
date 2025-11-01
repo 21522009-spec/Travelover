@@ -1,8 +1,29 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.gms.google-services")
+}
+
+val otpProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { load(it) }
+    }
+}
+
+fun quoteProperty(value: String?): String {
+    return value?.replace("\\", "\\\\")?.replace("\"", "\\\"") ?: ""
+}
+
+fun booleanProperty(key: String, default: Boolean): Boolean {
+    return otpProperties.getProperty(key)?.toBooleanStrictOrNull() ?: default
+}
+
+fun intProperty(key: String, default: Int): Int {
+    return otpProperties.getProperty(key)?.toIntOrNull() ?: default
 }
 
 android {
@@ -17,6 +38,37 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField(
+            "String",
+            "OTP_EMAIL_ADDRESS",
+            "\"${quoteProperty(otpProperties.getProperty("otp.email.address"))}\""
+        )
+        buildConfigField(
+            "String",
+            "OTP_EMAIL_PASSWORD",
+            "\"${quoteProperty(otpProperties.getProperty("otp.email.password"))}\""
+        )
+        buildConfigField(
+            "String",
+            "OTP_EMAIL_HOST",
+            "\"${quoteProperty(otpProperties.getProperty("otp.email.host") ?: "smtp.gmail.com")}\""
+        )
+        buildConfigField(
+            "String",
+            "OTP_EMAIL_SENDER_NAME",
+            "\"${quoteProperty(otpProperties.getProperty("otp.email.sender_name") ?: "Travelover Support")}\""
+        )
+        buildConfigField(
+            "int",
+            "OTP_EMAIL_PORT",
+            intProperty("otp.email.port", 587).toString()
+        )
+        buildConfigField(
+            "boolean",
+            "OTP_EMAIL_USE_TLS",
+            booleanProperty("otp.email.use_tls", true).toString()
+        )
     }
 
     buildTypes {
@@ -36,6 +88,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
+        buildConfig = true
         compose = true
     }
 }
@@ -47,10 +100,12 @@ dependencies {
     implementation("com.google.firebase:firebase-database:21.0.0")
     implementation("com.google.firebase:firebase-storage:21.0.0")
     implementation("com.google.firebase:firebase-auth:23.1.0")
-    
+
     implementation("com.google.gms.google-services:com.google.gms.google-services.gradle.plugin:4.4.4")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.google.android.material:material:1.12.0")
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
