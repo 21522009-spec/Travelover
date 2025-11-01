@@ -1,3 +1,64 @@
 <resources>
     <string name="app_name">ĐồÁnPTUDTTBDD</string>
+    <string name="message_no_search_result">Không tìm thấy địa điểm phù hợp với từ khóa của bạn.</string>
+    <string name="message_error_empty">Vui lòng nhập nội dung trước khi gửi.</string>
+
+    <string name="home_title">Khám phá địa điểm tuyệt vời</string>
+    <string name="home_subtitle">Tìm kiếm nơi ở lý tưởng cho chuyến đi tiếp theo của bạn</string>
+    <string name="home_search_hint">Tìm kiếm địa điểm, chỗ ở...</string>
+    <string name="home_recommendation_title">Đề xuất dành cho bạn</string>
+    <string name="home_logo_content_description">Biểu tượng ứng dụng Travelover</string>
+    <string name="home_search_content_description">Thực hiện tìm kiếm địa điểm</string>
+    <string name="message_no_places">Hiện chưa có địa điểm nào để hiển thị</string>
+    <string name="place_desc_giang_dien">Khu Du Lịch Sinh Thái Thác Giang Điền chính thức mở cửa đón khách từ năm 2006 với nhiều dịch vụ sinh thái như tắm suối, cắm trại, BBQ và tổ chức team building. Không gian xanh mát được ví như “Đà Lạt của miền Đông”.</string>
+    <string name="place_detail_amenities_prefix">Tiện ích nổi bật: %1$s</string>
+
+    <string name="booking_price_template">Giá: %1$s / đêm</string>
+    <string name="booking_error_missing_date">Vui lòng chọn đầy đủ ngày nhận và trả phòng.</string>
+    <string name="booking_error_invalid_date">Ngày không hợp lệ. Vui lòng chọn lại.</string>
+    <string name="booking_error_checkout">Ngày trả phòng phải sau ngày nhận phòng.</string>
+    <string name="booking_summary_title">Xác nhận đặt phòng</string>
+    <string name="booking_summary_template">Bạn sẽ ở từ %1$s đến %2$s (%3$d đêm) với %4$d người lớn và %5$d trẻ em.
+Tổng chi phí: %6$s</string>
+
+    <string name="review_error_rating">Vui lòng đánh giá số sao trước khi gửi.</string>
+    <string name="review_error_content">Vui lòng nhập nội dung đánh giá.</string>
+    <string name="review_success_message">Cảm ơn bạn đã đánh giá %1$s với %2$.1f sao!
+"%3$s"</string>
+
+    <string name="add_place_choose_image_message">Tính năng chọn ảnh sẽ được bổ sung trong phiên bản kế tiếp.</string>
+    <string name="add_place_error_required">Vui lòng nhập đầy đủ tên, vị trí và giá.</string>
+    <string name="add_place_error_price">Giá phải là số hợp lệ.</string>
+    <string name="add_place_default_description">Chưa có mô tả chi tiết cho địa điểm này.</string>
+    <string name="add_place_success">Đã thêm địa điểm mới thành công!</string>
+
+    <string name="admin_report_dialog_title">Báo cáo vi phạm</string>
+    <string name="admin_report_dialog_message">Danh sách báo cáo sẽ được đồng bộ từ hệ thống quản trị. Hiện tại dữ liệu minh họa chỉ hiển thị số lượng báo cáo.</string>
+    <string name="admin_user_email_template">Email: %1$s
+SĐT: %2$s</string>
+    <string name="admin_user_unlock">Mở khóa</string>
+    <string name="admin_user_lock">Khóa</string>
+    <string name="admin_user_delete">Xóa</string>
+    <string name="admin_user_locked">Đã khóa tài khoản người dùng.</string>
+    <string name="admin_user_unlocked">Đã mở khóa tài khoản người dùng.</string>
+    <string name="admin_user_delete_reason_error">Vui lòng nhập lý do xóa.</string>
+    <string name="admin_user_deleted">Đã xóa người dùng %1$s.</string>
+    <string name="admin_user_status_locked">Trạng thái: Đã khóa</string>
+    <string name="admin_user_status_active">Trạng thái: Hoạt động</string>
+
+    <string name="admin_place_price_template">Giá: %1$s/đêm</string>
+    <string name="admin_place_reason_error">Vui lòng nhập lý do xóa địa điểm.</string>
+    <string name="admin_place_deleted">Đã xóa địa điểm %1$s.</string>
+
+    <string name="owner_revenue_dialog_title">Doanh thu chi tiết</string>
+    <string name="owner_revenue_dialog_message">Doanh thu hôm nay bao gồm các đơn đặt phòng đã thanh toán và đơn đặt cọc trước.
+Các chỉ số đang hiển thị dữ liệu mẫu để minh họa.</string>
+
+    <string name="profile_change_avatar_message">Tính năng cập nhật ảnh đại diện sẽ có trong thời gian tới.</string>
+    <string name="profile_update_success">Đã lưu thông tin hồ sơ.</string>
+    <string name="profile_error_required">Trường thông tin này là bắt buộc.</string>
+    <string name="profile_change_password_title">Hướng dẫn đổi mật khẩu</string>
+    <string name="profile_change_password_message">Để đổi mật khẩu, vui lòng sử dụng tính năng quên mật khẩu ở màn hình đăng nhập hoặc liên hệ quản trị viên.</string>
+
+
 </resources>
