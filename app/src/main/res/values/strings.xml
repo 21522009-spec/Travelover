@@ -65,5 +65,6 @@ Các chỉ số đang hiển thị dữ liệu mẫu để minh họa.</string>
     <string name="forgot_password_otp_hint">Nhập mã OTP gồm 6 chữ số</string>
     <string name="forgot_password_otp_sent">Mã OTP đã được gửi tới %1$s. Vui lòng kiểm tra hộp thư và nhập mã trong vòng 5 phút.</string>
     <string name="forgot_password_resend">Không nhận được mã? Gửi lại</string>
-
+    <string name="forgot_password_send_reset_link_button">Gửi email đặt lại mật khẩu</string>
+    <string name="forgot_password_reset_email_sent">Đã gửi email đặt lại mật khẩu. Vui lòng kiểm tra hộp thư của bạn.</string>
 </resources>
