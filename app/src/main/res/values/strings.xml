@@ -49,6 +49,7 @@ SĐT: %2$s</string>
     <string name="admin_place_price_template">Giá: %1$s/đêm</string>
     <string name="admin_place_reason_error">Vui lòng nhập lý do xóa địa điểm.</string>
     <string name="admin_place_deleted">Đã xóa địa điểm %1$s.</string>
+    <string name="admin_login_success">Đăng nhập quản trị thành công.</string>
 
     <string name="owner_revenue_dialog_title">Doanh thu chi tiết</string>
     <string name="owner_revenue_dialog_message">Doanh thu hôm nay bao gồm các đơn đặt phòng đã thanh toán và đơn đặt cọc trước.
