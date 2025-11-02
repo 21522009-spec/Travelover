@@ -19,6 +19,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
     private TravelDataRepository repository;
     private Place place;
+    private RatingBar ratingBar;
+    private TextView tvRatingValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +41,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
         ImageView imgPlace = findViewById(R.id.imgPlace);
         TextView tvPlaceName = findViewById(R.id.tvPlaceName);
         TextView tvLocation = findViewById(R.id.tvLocation);
-        RatingBar ratingBar = findViewById(R.id.ratingBar);
-        TextView tvRatingValue = findViewById(R.id.tvRatingValue);
+        ratingBar = findViewById(R.id.ratingBar);
+        tvRatingValue = findViewById(R.id.tvRatingValue);
         TextView tvDescription = findViewById(R.id.tvDescription);
         MaterialButton btnBookRoom = findViewById(R.id.btnBookRoom);
         MaterialButton btnWriteReview = findViewById(R.id.btnWriteReview);
@@ -50,11 +52,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         imgPlace.setImageResource(place.getImageResId());
         tvPlaceName.setText(place.getName());
         tvLocation.setText(place.getLocation());
-        ratingBar.setRating(place.getRating());
-        tvRatingValue.setText(String.format(Locale.getDefault(),
-                "%.1f/5 (%d đánh giá)",
-                place.getRating(),
-                place.getRatingCount()));
+        updateRatingSection();
 
         String description = place.getDescription();
         if (!place.getAmenities().isEmpty()) {
@@ -75,5 +73,20 @@ public class PlaceDetailActivity extends AppCompatActivity {
             intent.putExtra(ReviewActivity.EXTRA_PLACE_ID, place.getId());
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateRatingSection();
+    }
+
+    private void updateRatingSection() {
+        float rating = place.getRating();
+        ratingBar.setRating(rating);
+        tvRatingValue.setText(String.format(Locale.getDefault(),
+                "%.1f/5 (%d đánh giá)",
+                rating,
+                place.getRatingCount()));
     }
 }

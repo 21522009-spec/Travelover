@@ -6,13 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,9 +30,8 @@ public class AdminMessagesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_messages);
 
         repository = TravelDataRepository.getInstance(this);
-
-        ImageView btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(v -> finish());
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
 
         scrollView = findViewById(R.id.messageScrollView);
         messageContainer = findViewById(R.id.messageContainer);

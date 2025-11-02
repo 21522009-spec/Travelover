@@ -120,6 +120,21 @@ public final class TravelDataRepository {
         ownerConversation.add(message);
     }
 
+    public void addReview(@NonNull String placeId, float rating, @NonNull String content) {
+        Place place = getPlaceOrThrow(placeId);
+        PlaceReview review = new PlaceReview(UUID.randomUUID().toString(),
+                placeId,
+                rating,
+                content,
+                System.currentTimeMillis());
+        place.addReview(review);
+    }
+
+    @NonNull
+    public List<PlaceReview> getReviewsForPlace(@NonNull String placeId) {
+        return getPlaceOrThrow(placeId).getReviews();
+    }
+
     public int getTotalUsers() {
         return users.size();
     }

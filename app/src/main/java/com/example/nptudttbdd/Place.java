@@ -13,11 +13,13 @@ public class Place implements Serializable {
     private final String name;
     private final String location;
     private final long pricePerNight;
-    private final float rating;
-    private final int ratingCount;
+    private float rating;
+    private int ratingCount;
+    private float ratingTotal;
     private final String description;
     private final @DrawableRes int imageResId;
     private final List<String> amenities;
+    private final List<PlaceReview> reviews = new ArrayList<>();
 
     public Place(@NonNull String id,
                  @NonNull String name,
@@ -32,11 +34,16 @@ public class Place implements Serializable {
         this.name = name;
         this.location = location;
         this.pricePerNight = pricePerNight;
-        this.rating = rating;
-        this.ratingCount = ratingCount;
+        this.rating = clampRating(rating);
+        this.ratingCount = Math.max(0, ratingCount);
+        this.ratingTotal = this.rating * this.ratingCount;
         this.description = description;
         this.imageResId = imageResId;
         this.amenities = new ArrayList<>(amenities);
+    }
+
+    private static float clampRating(float rating) {
+        return Math.max(0f, Math.min(5f, rating));
     }
 
     @NonNull
@@ -58,11 +65,11 @@ public class Place implements Serializable {
         return pricePerNight;
     }
 
-    public float getRating() {
+    public synchronized float getRating() {
         return rating;
     }
 
-    public int getRatingCount() {
+    public synchronized int getRatingCount() {
         return ratingCount;
     }
 
@@ -79,5 +86,21 @@ public class Place implements Serializable {
     @NonNull
     public List<String> getAmenities() {
         return new ArrayList<>(amenities);
+    }
+
+    public synchronized void addReview(@NonNull PlaceReview review) {
+        reviews.add(review);
+        ratingTotal += clampRating(review.getRating());
+        ratingCount += 1;
+        if (ratingCount == 0) {
+            rating = 0f;
+        } else {
+            rating = ratingTotal / ratingCount;
+        }
+    }
+
+    @NonNull
+    public synchronized List<PlaceReview> getReviews() {
+        return new ArrayList<>(reviews);
     }
 }

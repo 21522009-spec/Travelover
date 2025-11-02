@@ -2,11 +2,12 @@ package com.example.nptudttbdd;
 
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.appbar.MaterialToolbar;
+
 
 public class AdminDashboardActivity extends AppCompatActivity {
 
@@ -19,15 +20,14 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         repository = TravelDataRepository.getInstance(this);
 
-        ImageView btnBack = findViewById(R.id.btnBack);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
         TextView tvUserCount = findViewById(R.id.tvUserCount);
         TextView tvPlaceCount = findViewById(R.id.tvPlaceCount);
         TextView tvReportCount = findViewById(R.id.tvReportCount);
         Button btnManageUsers = findViewById(R.id.btnManageUsers);
         Button btnManagePlaces = findViewById(R.id.btnManagePlaces);
         Button btnViewReports = findViewById(R.id.btnViewReports);
-
-        btnBack.setOnClickListener(v -> finish());
 
         updateStatisticCards(tvUserCount, tvPlaceCount, tvReportCount);
 

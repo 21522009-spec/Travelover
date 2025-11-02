@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.appbar.MaterialToolbar;
 
 public class ReviewActivity extends AppCompatActivity {
 
@@ -33,17 +34,17 @@ public class ReviewActivity extends AppCompatActivity {
         }
         place = repository.getPlaceOrThrow(placeId);
 
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
+
         ImageView imgPlace = findViewById(R.id.imgPlace);
         TextView tvPlaceName = findViewById(R.id.tvPlaceName);
-        ImageView btnBack = findViewById(R.id.btnBack);
         RatingBar ratingBar = findViewById(R.id.ratingBar);
         EditText edtReview = findViewById(R.id.edtReview);
         MaterialButton btnSubmit = findViewById(R.id.btnSubmitReview);
 
         imgPlace.setImageResource(place.getImageResId());
         tvPlaceName.setText(place.getName());
-
-        btnBack.setOnClickListener(v -> finish());
 
         btnSubmit.setOnClickListener(v -> {
             float rating = ratingBar.getRating();
@@ -57,6 +58,7 @@ public class ReviewActivity extends AppCompatActivity {
                 edtReview.requestFocus();
                 return;
             }
+            repository.addReview(place.getId(), rating, content);
             showSuccessMessage(rating, content);
         });
     }
