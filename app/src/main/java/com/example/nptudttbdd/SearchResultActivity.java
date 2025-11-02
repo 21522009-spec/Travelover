@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -42,16 +43,21 @@ public class SearchResultActivity extends AppCompatActivity implements PlaceAdap
 
         String initialQuery = getIntent().getStringExtra(EXTRA_QUERY);
         if (initialQuery != null) {
-            edtSearch.setText(initialQuery);
-            edtSearch.setSelection(initialQuery.length());
-            performSearch(initialQuery);
+            String sanitizedQuery = initialQuery.trim();
+            edtSearch.setText(sanitizedQuery);
+            edtSearch.setSelection(sanitizedQuery.length());
+            performSearch(sanitizedQuery);
         } else {
             renderResults(repository.getPlaces());
         }
 
         edtSearch.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                performSearch(edtSearch.getText().toString());
+            if (actionId == EditorInfo.IME_ACTION_SEARCH
+                    || (event != null
+                    && event.getAction() == KeyEvent.ACTION_DOWN
+                    && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                CharSequence currentText = edtSearch.getText();
+                performSearch(currentText != null ? currentText.toString() : "");
                 return true;
             }
             return false;
@@ -64,8 +70,9 @@ public class SearchResultActivity extends AppCompatActivity implements PlaceAdap
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                performSearch(s.toString());
+                performSearch(s != null ? s.toString() : "");
             }
+
 
             @Override
             public void afterTextChanged(Editable s) {

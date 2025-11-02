@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private TextView btnRegister, btnForgot;
@@ -53,6 +55,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
+        String emailInput = AuthInputValidator.getTrimmedText(etEmail);
+        String passwordInput = AuthInputValidator.getTrimmedText(etPassword);
+
+        if (isAdminCredentials(emailInput, passwordInput)) {
+            openAdminDashboard();
+            return;
+        }
+
         if (!AuthInputValidator.ensureValidEmail(
                 etEmail,
                 "Vui lòng nhập email!",
@@ -66,10 +76,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setLoading(true);
 
-        String email = AuthInputValidator.getTrimmedText(etEmail);
-        String password = AuthInputValidator.getTrimmedText(etPassword);
-
-        authManager.loginUser(email, password, new FirebaseAuthManager.LoginCallback() {
+        authManager.loginUser(emailInput, passwordInput, new FirebaseAuthManager.LoginCallback() {
             @Override
             public void onSuccess(@NonNull FirebaseUser firebaseUser, UserProfile profile) {
                 setLoading(false);
@@ -96,8 +103,18 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister.setEnabled(!loading);
         btnForgot.setEnabled(!loading);
     }
-}
 
+    private boolean isAdminCredentials(@NonNull String username, @NonNull String password) {
+        return ADMIN_USERNAME.equalsIgnoreCase(username)
+                && ADMIN_PASSWORD.equals(password);
+    }
+
+    private void openAdminDashboard() {
+        Toast.makeText(this, R.string.admin_login_success, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
+        finish();
+    }
+}
 
 
 

@@ -35,6 +35,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
         place = repository.getPlaceOrThrow(placeId);
 
+        ImageView btnBack = findViewById(R.id.btnBack);
         ImageView imgPlace = findViewById(R.id.imgPlace);
         TextView tvPlaceName = findViewById(R.id.tvPlaceName);
         TextView tvLocation = findViewById(R.id.tvLocation);
@@ -43,6 +44,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
         TextView tvDescription = findViewById(R.id.tvDescription);
         MaterialButton btnBookRoom = findViewById(R.id.btnBookRoom);
         MaterialButton btnWriteReview = findViewById(R.id.btnWriteReview);
+
+        btnBack.setOnClickListener(v -> finish());
 
         imgPlace.setImageResource(place.getImageResId());
         tvPlaceName.setText(place.getName());

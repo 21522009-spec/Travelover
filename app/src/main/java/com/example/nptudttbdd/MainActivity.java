@@ -37,15 +37,17 @@ public class MainActivity extends AppCompatActivity implements PlaceAdapter.OnPl
 
         edtSearch = findViewById(R.id.edtSearch);
         ImageButton btnSearch = findViewById(R.id.btnSearch);
-        btnSearch.setOnClickListener(v -> openSearchScreen(edtSearch.getText().toString()));
+        btnSearch.setOnClickListener(v -> openSearchWithCurrentQuery());
         btnSearch.setOnLongClickListener(v -> {
             startActivity(new Intent(MainActivity.this, AddPlaceActivity.class));
             return true;
         });
         edtSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH
-                    || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                openSearchScreen(edtSearch.getText().toString());
+                    || (event != null
+                    && event.getAction() == KeyEvent.ACTION_DOWN
+                    && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                openSearchWithCurrentQuery();
                 return true;
             }
             return false;
@@ -86,12 +88,21 @@ public class MainActivity extends AppCompatActivity implements PlaceAdapter.OnPl
         });
     }
 
-    private void openSearchScreen(@NonNull String query) {
-        Intent intent = new Intent(this, SearchResultActivity.class);
-        intent.putExtra(SearchResultActivity.EXTRA_QUERY, query);
-        startActivity(intent);
+    private void openSearchWithCurrentQuery() {
+        CharSequence currentText = edtSearch.getText();
+        String query = currentText != null ? currentText.toString().trim() : "";
+        if (query.isEmpty()) {
+            edtSearch.requestFocus();
+            return;
+        }
+        openSearchScreen(query);
     }
 
+    private void openSearchScreen(@NonNull String query) {
+        Intent intent = new Intent(this, SearchResultActivity.class);
+        intent.putExtra(SearchResultActivity.EXTRA_QUERY, query.trim());
+        startActivity(intent);
+    }
     private void openPlaceDetail(@NonNull Place place) {
         Intent intent = new Intent(this, PlaceDetailActivity.class);
         intent.putExtra(PlaceDetailActivity.EXTRA_PLACE_ID, place.getId());
