@@ -9,39 +9,31 @@
     android:padding="8dp"
     tools:context=".AdminMessagesActivity">
 
-    <!-- Header -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#FF9900"
-        android:paddingHorizontal="12dp">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/transparent"
+        android:elevation="0dp">
 
-        <!-- Nút Back -->
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_arrow_back"
-            android:contentDescription="Quay lại"
-            app:tint="@android:color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <!-- Tiêu đề ở giữa thật sự -->
-        <TextView
-            android:id="@+id/tvChatWith"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Liên hệ: Nguyễn Văn A"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:background="@drawable/bg_toolbar_gradient"
+            android:minHeight="?attr/actionBarSize"
+            android:paddingStart="20dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="24dp"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:subtitle="Trao đổi với khách hàng"
+            app:subtitleTextColor="@android:color/white"
+            app:title="Tin nhắn hỗ trợ"
+            app:titleCentered="true"
+            app:titleTextColor="@android:color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
 
     <!-- Khu vực hiển thị tin nhắn -->
@@ -79,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_message_received"
                     android:padding="10dp"
-                    android:text="Xin chào, tôi cần hỗ trợ về đơn đặt phòng!"
+                    android:text="Xin chào, mình muốn nhận hỗ trợ về dịch vụ đặt phòng!"
                     android:textColor="#000000"
                     android:layout_weight="0.7"
                     android:textSize="14sp" />

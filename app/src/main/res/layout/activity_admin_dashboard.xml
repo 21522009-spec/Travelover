@@ -14,41 +14,31 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Header -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="#FF9900"
-            android:paddingHorizontal="12dp">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@android:color/transparent"
+            android:elevation="0dp">
 
-            <!-- Nút Back -->
-            <ImageView
-                android:id="@+id/btnBack"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:src="@drawable/ic_arrow_back"
-                android:contentDescription="Quay lại"
-                app:tint="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <!-- Tiêu đề chính giữa -->
-            <TextView
-                android:id="@+id/tvHeaderTitle"
-                android:layout_width="wrap_content"
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bảng điều khiển Admin"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5" />
+                android:background="@drawable/bg_toolbar_gradient"
+                android:minHeight="?attr/actionBarSize"
+                android:paddingStart="20dp"
+                android:paddingTop="24dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="28dp"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:subtitle="Theo dõi số liệu hệ thống"
+                app:subtitleTextColor="@android:color/white"
+                app:title="Bảng điều khiển Admin"
+                app:titleCentered="true"
+                app:titleTextColor="@android:color/white" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
 
         <!-- Tổng quan -->
@@ -83,7 +73,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_user"
-                    android:tint="#FF9900" />
+                    app:tint="#FF9900" />
 
                 <TextView
                     android:id="@+id/tvUserCount"
@@ -116,7 +106,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_home"
-                    android:tint="#FF9900" />
+                    app:tint="#FF9900" />
 
                 <TextView
                     android:id="@+id/tvPlaceCount"
@@ -148,7 +138,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_report"
-                    android:tint="#FF9900" />
+                    app:tint="#FF9900" />
 
                 <TextView
                     android:id="@+id/tvReportCount"

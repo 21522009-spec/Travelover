@@ -132,18 +132,21 @@
         android:paddingEnd="16dp"
         android:paddingBottom="16dp" />
 
-    <!-- Thanh điều hướng dưới -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="72dp"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:elevation="8dp"
+        android:paddingStart="8dp"
         android:paddingTop="4dp"
-        android:paddingBottom="8dp"
-        app:itemIconSize="24dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        app:itemIconSize="22dp"
         app:itemIconTint="@color/bottom_nav_item"
         app:itemHorizontalTranslationEnabled="false"
+        app:itemTextAppearanceActive="@style/TextAppearance.BottomNavigation.Active"
+        app:itemTextAppearanceInactive="@style/TextAppearance.BottomNavigation.Inactive"
         app:itemTextColor="@color/bottom_nav_item"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />

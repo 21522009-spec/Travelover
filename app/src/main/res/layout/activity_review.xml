@@ -7,40 +7,31 @@
     android:background="@color/white"
     android:padding="16dp">
 
-    <!-- Header -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#FF9900"
-        android:paddingHorizontal="12dp">
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:elevation="0dp">
 
-        <!-- Nút quay lại -->
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_arrow_back"
-            android:contentDescription="Quay lại"
-            app:tint="@android:color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <!-- Tiêu đề căn giữa tuyệt đối -->
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Viết đánh giá"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:background="@drawable/bg_toolbar_gradient"
+            android:minHeight="?attr/actionBarSize"
+            android:paddingStart="20dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="24dp"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:subtitle="Chia sẻ trải nghiệm của bạn"
+            app:subtitleTextColor="@android:color/white"
+            app:title="Viết đánh giá"
+            app:titleCentered="true"
+            app:titleTextColor="@android:color/white" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
 
 
     <!-- Thông tin địa điểm -->
