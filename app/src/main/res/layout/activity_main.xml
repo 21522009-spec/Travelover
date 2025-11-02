@@ -91,9 +91,10 @@
                     android:id="@+id/edtSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:maxLines="1" />
+                    android:imeOptions="actionSearch|flagNoFullscreen"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <ImageButton
@@ -138,9 +139,13 @@
         android:layout_height="72dp"
         android:background="@color/white"
         android:elevation="8dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
         app:itemIconSize="24dp"
         app:itemIconTint="@color/bottom_nav_item"
+        app:itemHorizontalTranslationEnabled="false"
         app:itemTextColor="@color/bottom_nav_item"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
 
 </LinearLayout>

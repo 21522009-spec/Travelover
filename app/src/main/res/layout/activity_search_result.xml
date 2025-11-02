@@ -45,9 +45,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
-                android:inputType="text"
+                android:imeOptions="actionSearch|flagNoFullscreen"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
                 android:paddingStart="40dp"
-                android:paddingEnd="8dp" />
+                android:paddingEnd="8dp"
+                android:singleLine="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
     </RelativeLayout>

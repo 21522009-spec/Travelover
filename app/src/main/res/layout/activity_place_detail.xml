@@ -6,14 +6,47 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <!-- Thanh tiêu đề -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/primary_orange"
+        android:paddingHorizontal="12dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="Quay lại"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvToolbarTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chi tiết địa điểm"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <!-- Ảnh địa điểm -->
     <ImageView
         android:id="@+id/imgPlace"
         android:layout_width="match_parent"
         android:layout_height="220dp"
+        android:contentDescription="Ảnh địa điểm"
         android:scaleType="centerCrop"
-        android:src="@drawable/thac_giang_dien"
-        android:contentDescription="Ảnh địa điểm" />
+        android:src="@drawable/thac_giang_dien" />
 
     <!-- Nội dung cuộn -->
     <ScrollView
@@ -49,9 +82,10 @@
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:src="@drawable/thac_giang_dien"
-                    app:tint="#FF9900"
-                    android:layout_marginEnd="4dp" />
+                    android:layout_marginEnd="4dp"
+                    android:contentDescription="Biểu tượng vị trí"
+                    android:src="@drawable/ic_location"
+                    app:tint="@color/primary_orange" />
 
                 <TextView
                     android:id="@+id/tvLocation"

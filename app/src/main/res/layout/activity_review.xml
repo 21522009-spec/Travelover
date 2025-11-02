@@ -86,7 +86,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numStars="5"
+            android:progressBackgroundTint="#DDDDDD"
+            android:progressTint="#fff600"
+            android:secondaryProgressTint="#fff600"
             android:stepSize="1"
+            android:thumbTint="#fff600"
             android:rating="4" />
     </LinearLayout>
 
