@@ -1,13 +1,17 @@
 package com.example.nptudttbdd;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -21,6 +25,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
     private Place place;
     private RatingBar ratingBar;
     private TextView tvRatingValue;
+    private ImageView btnFavorite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         TextView tvDescription = findViewById(R.id.tvDescription);
         MaterialButton btnBookRoom = findViewById(R.id.btnBookRoom);
         MaterialButton btnWriteReview = findViewById(R.id.btnWriteReview);
+        btnFavorite = findViewById(R.id.btnFavorite);
 
         btnBack.setOnClickListener(v -> finish());
 
@@ -53,6 +59,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         tvPlaceName.setText(place.getName());
         tvLocation.setText(place.getLocation());
         updateRatingSection();
+        updateFavoriteIcon();
 
         String description = place.getDescription();
         if (!place.getAmenities().isEmpty()) {
@@ -61,6 +68,16 @@ public class PlaceDetailActivity extends AppCompatActivity {
             description = description + "\n\n" + amenities;
         }
         tvDescription.setText(description);
+
+        btnFavorite.setOnClickListener(v -> {
+            boolean isFavorite = repository.toggleFavorite(place.getId());
+            updateFavoriteIcon();
+            int messageRes = isFavorite ? R.string.favorite_added : R.string.favorite_removed;
+            Toast.makeText(this,
+                            getString(messageRes, place.getName()),
+                            Toast.LENGTH_SHORT)
+                    .show();
+        });
 
         btnBookRoom.setOnClickListener(v -> {
             Intent intent = new Intent(PlaceDetailActivity.this, BookingActivity.class);
@@ -79,6 +96,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateRatingSection();
+        updateFavoriteIcon();
     }
 
     private void updateRatingSection() {
@@ -88,5 +106,15 @@ public class PlaceDetailActivity extends AppCompatActivity {
                 "%.1f/5 (%d đánh giá)",
                 rating,
                 place.getRatingCount()));
+    }
+
+    private void updateFavoriteIcon() {
+        if (btnFavorite == null) {
+            return;
+        }
+        boolean isFavorite = repository.isFavorite(place.getId());
+        int colorRes = isFavorite ? R.color.favorite_star_active : R.color.favorite_star_inactive;
+        ColorStateList tint = ColorStateList.valueOf(ContextCompat.getColor(this, colorRes));
+        ImageViewCompat.setImageTintList(btnFavorite, tint);
     }
 }

@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements PlaceAdapter.OnPl
                 renderPlaces(repository.getPlaces());
                 return true;
             } else if (id == R.id.nav_favorite) {
-                startActivity(new Intent(MainActivity.this, OwnerDashboardActivity.class));
+                startActivity(new Intent(MainActivity.this, FavoritePlacesActivity.class));
                 return true;
             } else if (id == R.id.nav_account) {
                 startActivity(new Intent(MainActivity.this, UserProfileActivity.class));

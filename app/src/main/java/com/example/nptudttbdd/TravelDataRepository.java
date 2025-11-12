@@ -8,8 +8,10 @@ import androidx.annotation.NonNull;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 
 public final class TravelDataRepository {
@@ -20,6 +22,7 @@ public final class TravelDataRepository {
     private final List<UserAccount> users = new ArrayList<>();
     private final List<ChatMessage> adminConversation = new ArrayList<>();
     private final List<ChatMessage> ownerConversation = new ArrayList<>();
+    private final Set<String> favoritePlaceIds = new LinkedHashSet<>();
 
     private TravelDataRepository(Context context) {
         seedPlaces(context);
@@ -58,9 +61,45 @@ public final class TravelDataRepository {
         for (int i = 0; i < places.size(); i++) {
             if (places.get(i).getId().equals(placeId)) {
                 places.remove(i);
+                favoritePlaceIds.remove(placeId);
                 return;
             }
         }
+    }
+
+    public boolean toggleFavorite(@NonNull String placeId) {
+        getPlaceOrThrow(placeId);
+        if (favoritePlaceIds.contains(placeId)) {
+            favoritePlaceIds.remove(placeId);
+            return false;
+        }
+        favoritePlaceIds.add(placeId);
+        return true;
+    }
+
+    public void setFavorite(@NonNull String placeId, boolean favorite) {
+        getPlaceOrThrow(placeId);
+        if (favorite) {
+            favoritePlaceIds.add(placeId);
+        } else {
+            favoritePlaceIds.remove(placeId);
+        }
+    }
+
+    public boolean isFavorite(@NonNull String placeId) {
+        return favoritePlaceIds.contains(placeId);
+    }
+
+    @NonNull
+    public List<Place> getFavoritePlaces() {
+        List<Place> result = new ArrayList<>();
+        for (String id : favoritePlaceIds) {
+            try {
+                result.add(getPlaceOrThrow(id));
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+        return result;
     }
 
     @NonNull
@@ -174,7 +213,7 @@ public final class TravelDataRepository {
                 4.8f,
                 512,
                 "Homestay thiết kế theo phong cách Bắc Âu với view đồi thông, phù hợp gia đình và nhóm bạn.",
-                R.drawable.thac_giang_dien,
+                R.drawable.doi_gio_hu,
                 new String[]{"Ăn sáng miễn phí", "View đồi thông", "Cho thuê xe máy"});
 
         addPlaceInternal("place_vungtau_sunset",
@@ -184,7 +223,7 @@ public final class TravelDataRepository {
                 4.6f,
                 421,
                 "Biệt thự sát biển với hồ bơi riêng và khu vực BBQ, cách Bãi Sau 300m.",
-                R.drawable.thac_giang_dien,
+                R.drawable.sunset_villa_vungtau,
                 new String[]{"Hồ bơi riêng", "BBQ", "Ban công hướng biển"});
 
         addPlaceInternal("place_saigon_center",
@@ -194,7 +233,7 @@ public final class TravelDataRepository {
                 4.5f,
                 389,
                 "Căn hộ cao cấp tại trung tâm, di chuyển thuận tiện đến các điểm du lịch nổi tiếng.",
-                R.drawable.thac_giang_dien,
+                R.drawable.can_ho_trung_tam,
                 new String[]{"Gym", "Hồ bơi", "Lễ tân 24/7"});
     }
 
