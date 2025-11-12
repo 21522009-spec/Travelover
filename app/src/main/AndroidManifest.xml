@@ -35,6 +35,7 @@
         <activity android:name=".AdminMessagesActivity" />
         <activity android:name=".OwnerDashboardActivity" />
         <activity android:name=".OwnerMessagesActivity" />
+        <activity android:name=".FavoritePlacesActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity
             android:name=".LoginActivity"
