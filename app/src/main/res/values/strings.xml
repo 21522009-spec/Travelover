@@ -13,6 +13,12 @@
     <string name="place_desc_giang_dien">Khu Du Lịch Sinh Thái Thác Giang Điền chính thức mở cửa đón khách từ năm 2006 với nhiều dịch vụ sinh thái như tắm suối, cắm trại, BBQ và tổ chức team building. Không gian xanh mát được ví như “Đà Lạt của miền Đông”.</string>
     <string name="place_detail_amenities_prefix">Tiện ích nổi bật: %1$s</string>
 
+    <string name="favorite_title">Danh sách yêu thích</string>
+    <string name="favorite_empty_message">Danh sách yêu thích hiện đang trống.</string>
+    <string name="favorite_added">Đã thêm %1$s vào danh sách yêu thích.</string>
+    <string name="favorite_removed">Đã xóa %1$s khỏi danh sách yêu thích.</string>
+    <string name="favorite_icon_content_description">Thêm hoặc xóa khỏi yêu thích</string>
+
     <string name="booking_price_template">Giá: %1$s / đêm</string>
     <string name="booking_error_missing_date">Vui lòng chọn đầy đủ ngày nhận và trả phòng.</string>
     <string name="booking_error_invalid_date">Ngày không hợp lệ. Vui lòng chọn lại.</string>
@@ -57,6 +63,7 @@ Các chỉ số đang hiển thị dữ liệu mẫu để minh họa.</string>
 
     <string name="profile_change_avatar_message">Tính năng cập nhật ảnh đại diện sẽ có trong thời gian tới.</string>
     <string name="profile_update_success">Đã lưu thông tin hồ sơ.</string>
+    <string name="profile_update_error">Không thể cập nhật hồ sơ. Vui lòng thử lại.</string>
     <string name="profile_error_required">Trường thông tin này là bắt buộc.</string>
     <string name="profile_change_password_title">Hướng dẫn đổi mật khẩu</string>
     <string name="profile_change_password_message">Để đổi mật khẩu, vui lòng sử dụng tính năng quên mật khẩu ở màn hình đăng nhập hoặc liên hệ quản trị viên.</string>
