@@ -6,7 +6,6 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <!-- Thanh tiêu đề -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="56dp"
@@ -32,14 +31,25 @@
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/btnBack"
+            app:layout_constraintEnd_toStartOf="@id/btnFavorite"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/btnFavorite"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:contentDescription="@string/favorite_icon_content_description"
+            android:padding="4dp"
+            android:src="@drawable/ic_favorite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/favorite_star_inactive" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Ảnh địa điểm -->
     <ImageView
         android:id="@+id/imgPlace"
         android:layout_width="match_parent"
@@ -48,7 +58,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/thac_giang_dien" />
 
-    <!-- Nội dung cuộn -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -60,7 +69,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Tên địa điểm -->
             <TextView
                 android:id="@+id/tvPlaceName"
                 android:layout_width="match_parent"
@@ -71,7 +79,6 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
-            <!-- Vị trí -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -96,7 +103,6 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <!-- Đánh giá -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,7 +119,6 @@
                     android:stepSize="0.5"
                     android:progressTint="#FF9900" />
 
-                <!-- Dựa theo rating của google map ngày 22/10/2025 -->
                 <TextView
                     android:id="@+id/tvRatingValue"
                     android:layout_width="wrap_content"
@@ -124,7 +129,6 @@
                     android:layout_marginStart="8dp" />
             </LinearLayout>
 
-            <!-- Mô tả -->
             <TextView
                 android:id="@+id/tvDescription"
                 android:layout_width="match_parent"
@@ -135,7 +139,6 @@
                 android:lineSpacingExtra="4dp"
                 android:layout_marginBottom="24dp" />
 
-            <!-- Nút hành động -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnBookRoom"
                 android:layout_width="match_parent"
