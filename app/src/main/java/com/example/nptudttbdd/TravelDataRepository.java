@@ -265,18 +265,18 @@ public final class TravelDataRepository {
             return;
         }
         users.add(new UserAccount(UUID.randomUUID().toString(),
-                "Nguyễn Văn A",
-                "nguyenvana@example.com",
+                "Anh A",
+                "mra@example.com",
                 "0901234567",
                 false));
         users.add(new UserAccount(UUID.randomUUID().toString(),
-                "Trần Thị B",
-                "tranthib@example.com",
+                "Chị B",
+                "mrsb@example.com",
                 "0987654321",
                 false));
         users.add(new UserAccount(UUID.randomUUID().toString(),
-                "Lê Văn C",
-                "levanc@example.com",
+                "Bác C",
+                "unclec@example.com",
                 "0912345678",
                 true));
     }
@@ -301,13 +301,13 @@ public final class TravelDataRepository {
             return;
         }
         ownerConversation.add(new ChatMessage(UUID.randomUUID().toString(),
-                ChatMessage.Sender.GUEST,
-                "Chào anh/chị, phòng còn trống vào cuối tuần này không?"));
-        ownerConversation.add(new ChatMessage(UUID.randomUUID().toString(),
                 ChatMessage.Sender.OWNER,
+                "Chào shop, chỗ mình còn phòng trống vào cuối tuần này không ạ?"));
+        ownerConversation.add(new ChatMessage(UUID.randomUUID().toString(),
+                ChatMessage.Sender.GUEST,
                 "Chào bạn, hiện tại còn 2 phòng đôi trống vào cuối tuần nhé!"));
         ownerConversation.add(new ChatMessage(UUID.randomUUID().toString(),
-                ChatMessage.Sender.GUEST,
-                "Mình muốn đặt phòng cho 2 người lớn và 1 bé, giá như thế nào ạ?"));
+                ChatMessage.Sender.OWNER,
+                "Mình muốn đặt phòng cho 2 người lớn và 1 nhỏ, giá như thế nào ạ?"));
     }
 }
