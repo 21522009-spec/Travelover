@@ -24,7 +24,6 @@
             android:paddingEnd="20dp"
             android:paddingBottom="24dp"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:subtitle="Chia sẻ trải nghiệm của bạn"
             app:subtitleTextColor="@android:color/white"
             app:title="Viết đánh giá"
             app:titleCentered="true"
@@ -85,7 +84,6 @@
             android:rating="4" />
     </LinearLayout>
 
-    <!-- Ô nhập nội dung đánh giá -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layoutReview"
         android:layout_width="match_parent"
@@ -100,12 +98,10 @@
             android:layout_height="150dp"
             android:inputType="textMultiLine"
             android:gravity="top|start"
-            android:hint="Chia sẻ trải nghiệm của bạn tại đây..."
             android:maxLength="500"
             android:scrollbars="vertical" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Nút gửi đánh giá -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSubmitReview"
         android:layout_width="match_parent"
