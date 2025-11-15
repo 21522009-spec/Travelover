@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">ĐồÁnPTUDTTBDD</string>
+    <string name="app_name">Travelover</string>
     <string name="message_no_search_result">Không tìm thấy địa điểm phù hợp với từ khóa của bạn.</string>
     <string name="message_error_empty">Vui lòng nhập nội dung trước khi gửi.</string>
+    <string name="chat_button_content_description">Mở trò chuyện</string>
 
     <string name="home_title">Khám phá địa điểm tuyệt vời</string>
     <string name="home_subtitle">Tìm kiếm nơi ở lý tưởng cho chuyến đi tiếp theo của bạn</string>
