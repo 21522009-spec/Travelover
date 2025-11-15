@@ -32,6 +32,7 @@ public class BookingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_booking);
+        ChatButtonManager.attach(this);
 
         repository = TravelDataRepository.getInstance(this);
         String placeId = getIntent().getStringExtra(EXTRA_PLACE_ID);

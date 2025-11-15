@@ -31,6 +31,7 @@ public class AdminManagePlacesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_manage_places);
+        ChatButtonManager.attach(this);
 
         repository = TravelDataRepository.getInstance(this);
         placeListContainer = findViewById(R.id.placeList);

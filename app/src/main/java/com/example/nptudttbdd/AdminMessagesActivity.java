@@ -28,6 +28,7 @@ public class AdminMessagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_messages);
+        ChatButtonManager.attach(this);
 
         repository = TravelDataRepository.getInstance(this);
         MaterialToolbar toolbar = findViewById(R.id.toolbar);

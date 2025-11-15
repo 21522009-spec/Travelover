@@ -22,6 +22,7 @@ public class OwnerMessagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_messages);
+        ChatButtonManager.attach(this);
 
         repository = TravelDataRepository.getInstance(this);
         adapter = new ChatMessageAdapter();

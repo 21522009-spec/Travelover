@@ -30,6 +30,7 @@ public class AdminManageUsersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_manage_users);
+        ChatButtonManager.attach(this);
 
         repository = TravelDataRepository.getInstance(this);
         userListContainer = findViewById(R.id.userList);

@@ -24,6 +24,7 @@ public class FavoritePlacesActivity extends AppCompatActivity implements PlaceAd
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_places);
+        ChatButtonManager.attach(this);
 
         repository = TravelDataRepository.getInstance(this);
 
