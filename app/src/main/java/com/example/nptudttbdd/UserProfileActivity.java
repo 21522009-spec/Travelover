@@ -3,16 +3,23 @@ package com.example.nptudttbdd;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,13 +35,24 @@ public class UserProfileActivity extends AppCompatActivity {
     private EditText edtPhone;
     private EditText edtAddress;
     private CircleImageView imgAvatar;
+    private UserProfile currentProfile;
+
+    private ActivityResultLauncher<String> pickImageLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
+        ChatButtonManager.attach(this);
 
         authManager = new FirebaseAuthManager();
+
+        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+            if (uri != null) {
+                imgAvatar.setImageURI(uri);
+            }
+        });
+
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(v -> finish());
         ImageButton btnChangeAvatar = findViewById(R.id.btnChangeAvatar);
@@ -53,15 +71,13 @@ public class UserProfileActivity extends AppCompatActivity {
             loadUserProfile(user);
         }
 
-        btnChangeAvatar.setOnClickListener(v -> Toast.makeText(this,
-                R.string.profile_change_avatar_message,
-                Toast.LENGTH_SHORT).show());
+        btnChangeAvatar.setOnClickListener(v -> openImagePicker());
 
         btnUpdateInfo.setOnClickListener(v -> {
             if (!validateRequired(edtFullName) || !validateRequired(edtPhone) || !validateRequired(edtAddress)) {
                 return;
             }
-            Toast.makeText(this, R.string.profile_update_success, Toast.LENGTH_SHORT).show();
+            saveProfileChanges();
         });
 
         btnChangePassword.setOnClickListener(v -> showChangePasswordDialog());
@@ -84,13 +100,118 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void showChangePasswordDialog() {
-        new AlertDialog.Builder(this)
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_change_password, null, false);
+        TextInputEditText edtCurrentPassword = dialogView.findViewById(R.id.edtCurrentPassword);
+        TextInputEditText edtNewPassword = dialogView.findViewById(R.id.edtNewPassword);
+        TextInputEditText edtConfirmPassword = dialogView.findViewById(R.id.edtConfirmPassword);
+        View progressBar = dialogView.findViewById(R.id.progressChangePassword);
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.profile_change_password_title)
-                .setMessage(R.string.profile_change_password_message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
+                .setView(dialogView)
+                .setNegativeButton(android.R.string.cancel, (d, which) -> d.dismiss())
+                .setPositiveButton(R.string.profile_change_password_confirm, null)
+                .create();
+
+        dialog.setOnShowListener(d -> {
+            Button positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+            positiveButton.setOnClickListener(v -> attemptChangePassword(dialog,
+                    positiveButton,
+                    progressBar,
+                    edtCurrentPassword,
+                    edtNewPassword,
+                    edtConfirmPassword));
+        });
+
+        dialog.show();
     }
 
+    private void openImagePicker() {
+        if (pickImageLauncher != null) {
+            pickImageLauncher.launch("image/*");
+        }
+    }
+
+    private void attemptChangePassword(@NonNull AlertDialog dialog,
+                                       @NonNull Button positiveButton,
+                                       @NonNull View progressBar,
+                                       @NonNull TextInputEditText edtCurrentPassword,
+                                       @NonNull TextInputEditText edtNewPassword,
+                                       @NonNull TextInputEditText edtConfirmPassword) {
+        String currentPassword = edtCurrentPassword.getText() != null
+                ? edtCurrentPassword.getText().toString().trim() : "";
+        String newPassword = edtNewPassword.getText() != null
+                ? edtNewPassword.getText().toString().trim() : "";
+        String confirmPassword = edtConfirmPassword.getText() != null
+                ? edtConfirmPassword.getText().toString().trim() : "";
+
+        if (TextUtils.isEmpty(currentPassword)) {
+            edtCurrentPassword.setError(getString(R.string.profile_change_password_error_current_required));
+            edtCurrentPassword.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(newPassword)) {
+            edtNewPassword.setError(getString(R.string.profile_change_password_error_new_required));
+            edtNewPassword.requestFocus();
+            return;
+        }
+
+        if (newPassword.length() < 6) {
+            edtNewPassword.setError(getString(R.string.profile_change_password_error_length));
+            edtNewPassword.requestFocus();
+            return;
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            edtConfirmPassword.setError(getString(R.string.profile_change_password_error_mismatch));
+            edtConfirmPassword.requestFocus();
+            return;
+        }
+
+        FirebaseUser firebaseUser = authManager.getCurrentUser();
+        if (firebaseUser == null) {
+            Toast.makeText(this, R.string.profile_change_password_error_user, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String email = firebaseUser.getEmail();
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, R.string.profile_change_password_error_email, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        positiveButton.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
+
+        AuthCredential credential = EmailAuthProvider.getCredential(email, currentPassword);
+        firebaseUser.reauthenticate(credential)
+                .addOnSuccessListener(unused -> firebaseUser.updatePassword(newPassword)
+                        .addOnSuccessListener(unused1 -> {
+                            progressBar.setVisibility(View.GONE);
+                            positiveButton.setEnabled(true);
+                            dialog.dismiss();
+                            Toast.makeText(this, R.string.profile_change_password_success, Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> handlePasswordChangeError(progressBar, positiveButton, edtNewPassword, e)))
+                .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    positiveButton.setEnabled(true);
+                    edtCurrentPassword.setError(getString(R.string.profile_change_password_error_invalid_current));
+                    edtCurrentPassword.requestFocus();
+                });
+    }
+
+    private void handlePasswordChangeError(@NonNull View progressBar,
+                                           @NonNull Button positiveButton,
+                                           @NonNull TextInputEditText edtNewPassword,
+                                           @NonNull Exception e) {
+        progressBar.setVisibility(View.GONE);
+        positiveButton.setEnabled(true);
+        String message = e.getLocalizedMessage();
+        edtNewPassword.setError(!TextUtils.isEmpty(message) ? message : getString(R.string.profile_change_password_generic_error));
+        edtNewPassword.requestFocus();
+    }
     private void loadUserProfile(@NonNull FirebaseUser firebaseUser) {
         authManager.getUserProfileReference(firebaseUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -112,8 +233,11 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void bindProfile(@NonNull UserProfile profile) {
+        currentProfile = profile;
         edtFullName.setText(profile.getName());
         edtEmail.setText(profile.getEmail());
+        edtPhone.setText(profile.getPhone());
+        edtAddress.setText(profile.getAddress());
 
         if (TextUtils.isEmpty(profile.getAvatarUrl())) {
             imgAvatar.setImageResource(R.drawable.default_avatar);
@@ -123,10 +247,54 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void bindFallbackUser(@NonNull FirebaseUser firebaseUser) {
-        if (!TextUtils.isEmpty(firebaseUser.getDisplayName())) {
-            edtFullName.setText(firebaseUser.getDisplayName());
-        }
-        edtEmail.setText(firebaseUser.getEmail());
+        String fullName = TextUtils.isEmpty(firebaseUser.getDisplayName())
+                ? ""
+                : firebaseUser.getDisplayName();
+        String email = firebaseUser.getEmail() == null ? "" : firebaseUser.getEmail();
+        currentProfile = new UserProfile(firebaseUser.getUid(),
+                fullName,
+                email,
+                "user",
+                "");
+        edtFullName.setText(fullName);
+        edtEmail.setText(email);
+        edtPhone.setText("");
+        edtAddress.setText("");
         imgAvatar.setImageResource(R.drawable.default_avatar);
+    }
+
+    private void saveProfileChanges() {
+        if (currentProfile == null) {
+            FirebaseUser firebaseUser = authManager.getCurrentUser();
+            if (firebaseUser == null) {
+                Toast.makeText(this, R.string.profile_update_error, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            currentProfile = new UserProfile(firebaseUser.getUid(),
+                    "",
+                    firebaseUser.getEmail() == null ? "" : firebaseUser.getEmail(),
+                    "user",
+                    "");
+        }
+
+        currentProfile.setName(edtFullName.getText().toString().trim());
+        currentProfile.setPhone(edtPhone.getText().toString().trim());
+        currentProfile.setAddress(edtAddress.getText().toString().trim());
+
+        authManager.saveUserProfile(currentProfile, new FirebaseAuthManager.CompletionCallback() {
+            @Override
+            public void onComplete() {
+                Toast.makeText(UserProfileActivity.this,
+                        R.string.profile_update_success,
+                        Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(@NonNull String message) {
+                Toast.makeText(UserProfileActivity.this,
+                        message,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
