@@ -62,12 +62,23 @@ SĐT: %2$s</string>
     <string name="owner_revenue_dialog_message">Doanh thu hôm nay bao gồm các đơn đặt phòng đã thanh toán và đơn đặt cọc trước.
 Các chỉ số đang hiển thị dữ liệu mẫu để minh họa.</string>
 
-    <string name="profile_change_avatar_message">Tính năng cập nhật ảnh đại diện sẽ có trong thời gian tới.</string>
     <string name="profile_update_success">Đã lưu thông tin hồ sơ.</string>
     <string name="profile_update_error">Không thể cập nhật hồ sơ. Vui lòng thử lại.</string>
     <string name="profile_error_required">Trường thông tin này là bắt buộc.</string>
-    <string name="profile_change_password_title">Hướng dẫn đổi mật khẩu</string>
-    <string name="profile_change_password_message">Để đổi mật khẩu, vui lòng sử dụng tính năng quên mật khẩu ở màn hình đăng nhập hoặc liên hệ quản trị viên.</string>
+    <string name="profile_change_password_title">Đổi mật khẩu</string>
+    <string name="profile_change_password_confirm">Cập nhật</string>
+    <string name="profile_change_password_current_hint">Mật khẩu hiện tại</string>
+    <string name="profile_change_password_new_hint">Mật khẩu mới</string>
+    <string name="profile_change_password_confirm_hint">Nhập lại mật khẩu mới</string>
+    <string name="profile_change_password_error_current_required">Vui lòng nhập mật khẩu hiện tại.</string>
+    <string name="profile_change_password_error_new_required">Vui lòng nhập mật khẩu mới.</string>
+    <string name="profile_change_password_error_length">Mật khẩu mới phải có ít nhất 6 ký tự.</string>
+    <string name="profile_change_password_error_mismatch">Xác nhận mật khẩu chưa khớp.</string>
+    <string name="profile_change_password_error_user">Không tìm thấy thông tin người dùng. Vui lòng đăng nhập lại.</string>
+    <string name="profile_change_password_error_email">Tài khoản không có email hợp lệ.</string>
+    <string name="profile_change_password_error_invalid_current">Mật khẩu hiện tại không chính xác.</string>
+    <string name="profile_change_password_success">Đã cập nhật mật khẩu thành công.</string>
+    <string name="profile_change_password_generic_error">Không thể đổi mật khẩu. Vui lòng thử lại.</string>
 
     <string name="forgot_password_send_otp_button">Gửi mã OTP</string>
     <string name="forgot_password_verify_otp_button">Xác nhận OTP</string>
