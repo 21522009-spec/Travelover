@@ -101,12 +101,12 @@ android {
 }
 
 dependencies {
-    // Firebase
     implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database:21.0.0")
     implementation("com.google.firebase:firebase-storage:21.0.0")
     implementation("com.google.firebase:firebase-auth:23.1.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation("com.google.gms.google-services:com.google.gms.google-services.gradle.plugin:4.4.4")
     implementation("de.hdodenhof:circleimageview:3.1.0")
