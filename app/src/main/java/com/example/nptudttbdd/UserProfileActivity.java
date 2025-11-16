@@ -3,6 +3,7 @@ package com.example.nptudttbdd;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,10 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.FirebaseApp;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthCredential;
@@ -32,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserProfileActivity extends AppCompatActivity {
+    private static final String TAG = "UserProfileActivity";
 
     private FirebaseAuthManager authManager;
     private StorageReference avatarStorageRef;
@@ -43,7 +47,8 @@ public class UserProfileActivity extends AppCompatActivity {
     private UserProfile currentProfile;
     private Uri selectedAvatarUri;
 
-    private ActivityResultLauncher<String> pickImageLauncher;
+    private ActivityResultLauncher<String[]> pickImageLauncher;
+    private Uri persistedAvatarPermissionUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +57,11 @@ public class UserProfileActivity extends AppCompatActivity {
         ChatButtonManager.attach(this);
 
         authManager = new FirebaseAuthManager();
-        avatarStorageRef = FirebaseStorage.getInstance().getReference().child("user_avatars");
+        avatarStorageRef = buildAvatarStorageReference();
 
-        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+        pickImageLauncher = registerForActivityResult(new ActivityResultContracts.OpenDocument(), uri -> {
             if (uri != null) {
-                selectedAvatarUri = uri;
-                imgAvatar.setImageURI(uri);
+                handleAvatarSelection(uri);
             }
         });
 
@@ -98,6 +102,12 @@ public class UserProfileActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        releasePersistedAvatarPermission();
+    }
+
     private boolean validateRequired(EditText editText) {
         if (TextUtils.isEmpty(editText.getText().toString().trim())) {
             editText.setError(getString(R.string.profile_error_required));
@@ -136,8 +146,52 @@ public class UserProfileActivity extends AppCompatActivity {
 
     private void openImagePicker() {
         if (pickImageLauncher != null) {
-            pickImageLauncher.launch("image/*");
+            pickImageLauncher.launch(new String[]{"image/*"});
         }
+    }
+
+    private void handleAvatarSelection(@NonNull Uri uri) {
+        releasePersistedAvatarPermission();
+        int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+        try {
+            getContentResolver().takePersistableUriPermission(uri, takeFlags);
+            persistedAvatarPermissionUri = uri;
+        } catch (SecurityException ignored) {
+        }
+        selectedAvatarUri = uri;
+        imgAvatar.setImageURI(uri);
+    }
+
+    private void releasePersistedAvatarPermission() {
+        if (persistedAvatarPermissionUri == null) {
+            return;
+        }
+        int releaseFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+        try {
+            getContentResolver().releasePersistableUriPermission(persistedAvatarPermissionUri, releaseFlags);
+        } catch (SecurityException ignored) {
+        }
+        persistedAvatarPermissionUri = null;
+    }
+
+    @NonNull
+    private StorageReference buildAvatarStorageReference() {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        try {
+            FirebaseApp app = FirebaseApp.getInstance();
+            String bucket = app.getOptions().getStorageBucket();
+            if (!TextUtils.isEmpty(bucket)) {
+                String normalizedBucket = bucket.startsWith("gs://") ? bucket : "gs://" + bucket;
+                try {
+                    return storage.getReferenceFromUrl(normalizedBucket).child("user_avatars");
+                } catch (IllegalArgumentException e) {
+                    Log.w(TAG, "Invalid storage bucket " + bucket + ", falling back to default", e);
+                }
+            }
+        } catch (IllegalStateException e) {
+            Log.w(TAG, "FirebaseApp is not initialized yet", e);
+        }
+        return storage.getReference().child("user_avatars");
     }
 
     private void attemptChangePassword(@NonNull AlertDialog dialog,
@@ -227,6 +281,9 @@ public class UserProfileActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         UserProfile profile = snapshot.getValue(UserProfile.class);
                         if (profile != null) {
+                            if (TextUtils.isEmpty(profile.getUid())) {
+                                profile.setUid(firebaseUser.getUid());
+                            }
                             bindProfile(profile);
                         } else {
                             bindFallbackUser(firebaseUser);
@@ -278,17 +335,20 @@ public class UserProfileActivity extends AppCompatActivity {
     }
 
     private void saveProfileChanges() {
+        FirebaseUser firebaseUser = authManager.getCurrentUser();
+        if (firebaseUser == null) {
+            Toast.makeText(this, R.string.profile_update_error, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (currentProfile == null) {
-            FirebaseUser firebaseUser = authManager.getCurrentUser();
-            if (firebaseUser == null) {
-                Toast.makeText(this, R.string.profile_update_error, Toast.LENGTH_SHORT).show();
-                return;
-            }
             currentProfile = new UserProfile(firebaseUser.getUid(),
                     "",
                     firebaseUser.getEmail() == null ? "" : firebaseUser.getEmail(),
                     "user",
                     "");
+        } else if (TextUtils.isEmpty(currentProfile.getUid())) {
+            currentProfile.setUid(firebaseUser.getUid());
         }
 
         currentProfile.setName(edtFullName.getText().toString().trim());
