@@ -8,7 +8,6 @@
     android:background="#F5F5F5"
     tools:context=".OwnerMessagesActivity">
 
-    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="0dp"
@@ -32,14 +31,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tin nhắn khách hàng"
+            android:text="Tin nhắn"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginStart="16dp" />
     </LinearLayout>
 
-    <!-- Danh sách tin nhắn -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMessages"
         android:layout_width="0dp"
@@ -51,7 +49,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:listitem="@layout/item_message_sent" />
 
-    <!-- Thanh nhập tin nhắn -->
     <LinearLayout
         android:id="@+id/inputLayout"
         android:layout_width="0dp"

@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:background="@color/home_background">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +56,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Thanh tìm kiếm -->
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -121,7 +119,6 @@
         android:textSize="16sp"
         android:textStyle="bold" />
 
-    <!-- Danh sách địa điểm -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPlaces"
         android:layout_width="match_parent"

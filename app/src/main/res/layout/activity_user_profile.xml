@@ -37,7 +37,6 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- Ảnh đại diện -->
         <FrameLayout
             android:layout_width="120dp"
             android:layout_height="120dp"
@@ -47,7 +46,6 @@
                 android:id="@+id/imgAvatar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:src="@drawable/default_avatar"
                 android:contentDescription="Ảnh đại diện" />
 
             <ImageButton
@@ -62,7 +60,6 @@
                 android:contentDescription="Đổi ảnh đại diện" />
         </FrameLayout>
 
-        <!-- Thông tin cá nhân -->
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,6 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:enabled="false"
+                android:textColor="@color/profile_email_disabled"
+                android:textColorHint="@color/profile_email_disabled"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,7 +118,6 @@
                 android:inputType="textPostalAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Nút thao tác -->
         <Button
             android:id="@+id/btnUpdateInfo"
             android:layout_width="match_parent"

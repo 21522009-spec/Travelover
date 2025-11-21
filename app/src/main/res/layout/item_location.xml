@@ -15,7 +15,6 @@
         android:orientation="horizontal"
         android:padding="8dp">
 
-        <!-- Ảnh địa điểm -->
         <ImageView
             android:id="@+id/imgPlace"
             android:layout_width="100dp"
@@ -25,7 +24,6 @@
             android:contentDescription="Ảnh địa điểm"
             android:layout_marginEnd="12dp" />
 
-        <!-- Thông tin -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -59,7 +57,6 @@
                 android:textColor="#FF9900"
                 android:layout_marginTop="4dp" />
 
-            <!-- Đánh giá sao -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_message_sent"
-        android:text="Xin chào, bạn muốn đặt phòng vào ngày nào?"
+        android:text="Chào bạn, bạn muốn đặt phòng vào ngày nào ạ?"
         android:textColor="@android:color/white"
         android:padding="10dp"
         android:textSize="15sp"
