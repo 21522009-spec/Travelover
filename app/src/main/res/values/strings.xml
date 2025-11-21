@@ -13,6 +13,7 @@
     <string name="message_no_places">Hiện chưa có địa điểm nào để hiển thị</string>
     <string name="place_desc_giang_dien">Khu Du Lịch Sinh Thái Thác Giang Điền chính thức mở cửa đón khách từ năm 2006 với nhiều dịch vụ sinh thái như tắm suối, cắm trại, BBQ và tổ chức team building. Không gian xanh mát được ví như “Đà Lạt của miền Đông”.</string>
     <string name="place_detail_amenities_prefix">Tiện ích nổi bật: %1$s</string>
+    <string name="place_rating_template">%1$.1f/5 (%2$d đánh giá)</string>
 
     <string name="favorite_title">Danh sách yêu thích</string>
     <string name="favorite_empty_message">Danh sách yêu thích hiện đang trống.</string>
@@ -33,7 +34,7 @@ Tổng chi phí: %6$s</string>
     <string name="review_success_message">Cảm ơn bạn đã đánh giá %1$s với %2$.1f sao!
 "%3$s"</string>
 
-    <string name="add_place_choose_image_message">Tính năng chọn ảnh sẽ được bổ sung trong phiên bản kế tiếp.</string>
+    <string name="add_place_choose_image_message">Tính năng chọn ảnh hiện tại vẫn chưa được thêm.</string>
     <string name="add_place_error_required">Vui lòng nhập đầy đủ tên, vị trí và giá.</string>
     <string name="add_place_error_price">Giá phải là số hợp lệ.</string>
     <string name="add_place_default_description">Chưa có mô tả chi tiết cho địa điểm này.</string>
