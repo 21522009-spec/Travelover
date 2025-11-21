@@ -3,16 +3,12 @@ package com.example.nptudttbdd;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-/**
- * Model class to persist OTP information in Firebase Realtime Database.
- */
 public class PasswordResetOtp {
 
     private String otpHash;
     private long expiresAt;
     private boolean used;
 
-    // Required for Firebase
     public PasswordResetOtp() {
     }
 

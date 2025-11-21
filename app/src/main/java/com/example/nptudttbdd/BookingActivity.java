@@ -2,9 +2,11 @@ package com.example.nptudttbdd;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,19 +44,37 @@ public class BookingActivity extends AppCompatActivity {
         }
         place = repository.getPlaceOrThrow(placeId);
 
+        ImageView btnBack = findViewById(R.id.btnBack);
         ImageView imgPlace = findViewById(R.id.imgPlace);
         TextView tvPlaceName = findViewById(R.id.tvPlaceName);
+        TextView tvLocation = findViewById(R.id.tvLocation);
+        RatingBar ratingBar = findViewById(R.id.ratingBar);
+        TextView tvRatingValue = findViewById(R.id.tvRatingValue);
         TextView tvPricePerNight = findViewById(R.id.tvPricePerNight);
+        TextView tvDescription = findViewById(R.id.tvDescription);
         EditText edtCheckIn = findViewById(R.id.edtCheckIn);
         EditText edtCheckOut = findViewById(R.id.edtCheckOut);
         EditText edtAdults = findViewById(R.id.edtAdults);
         EditText edtChildren = findViewById(R.id.edtChildren);
         Button btnConfirm = findViewById(R.id.btnConfirmBooking);
 
+        btnBack.setOnClickListener(v -> finish());
         imgPlace.setImageResource(place.getImageResId());
         tvPlaceName.setText(place.getName());
+        tvLocation.setText(place.getLocation());
+        ratingBar.setRating(place.getRating());
+        tvRatingValue.setText(getString(R.string.place_rating_template,
+                place.getRating(),
+                place.getRatingCount()));
         tvPricePerNight.setText(getString(R.string.booking_price_template,
                 TravelDataRepository.formatCurrency(place.getPricePerNight())));
+        String description = place.getDescription();
+        if (!place.getAmenities().isEmpty()) {
+            String amenities = getString(R.string.place_detail_amenities_prefix,
+                    TextUtils.join(", ", place.getAmenities()));
+            description = description + "\n\n" + amenities;
+        }
+        tvDescription.setText(description);
 
         edtCheckIn.setOnClickListener(v -> showDatePicker(edtCheckIn, checkInCalendar));
         edtCheckOut.setOnClickListener(v -> showDatePicker(edtCheckOut, checkOutCalendar));

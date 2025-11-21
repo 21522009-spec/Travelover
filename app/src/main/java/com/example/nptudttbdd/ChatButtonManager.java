@@ -17,7 +17,6 @@ public final class ChatButtonManager {
     private static final int DRAG_THRESHOLD = 10;
 
     private ChatButtonManager() {
-        // Utility class
     }
 
     public static void attach(@NonNull AppCompatActivity activity) {
