@@ -59,9 +59,17 @@ SĐT: %2$s</string>
     <string name="admin_place_deleted">Đã xóa địa điểm %1$s.</string>
     <string name="admin_login_success">Đăng nhập quản trị thành công.</string>
 
+    <string name="owner_login_success">Đăng nhập chủ sở hữu thành công.</string>
     <string name="owner_revenue_dialog_title">Doanh thu chi tiết</string>
     <string name="owner_revenue_dialog_message">Doanh thu hôm nay bao gồm các đơn đặt phòng đã thanh toán và đơn đặt cọc trước.
 Các chỉ số đang hiển thị dữ liệu mẫu để minh họa.</string>
+    <string name="owner_portal_welcome">Chào mừng chủ sở hữu</string>
+    <string name="owner_portal_description">Chọn màn hình dưới đây để duyệt giao diện minh họa cho chủ sở hữu.</string>
+    <string name="owner_portal_navigation_title">Điều hướng nhanh</string>
+    <string name="owner_portal_dashboard">Bảng điều khiển</string>
+    <string name="owner_portal_messages">Trò chuyện với khách</string>
+    <string name="owner_portal_back_to_login">Quay lại đăng nhập</string>
+    <string name="owner_portal_hint">Các nút ở trên giúp chuyển qua lại giữa các layout dành cho chủ sở hữu.</string>
 
     <string name="profile_update_success">Đã lưu thông tin hồ sơ.</string>
     <string name="profile_update_error">Không thể cập nhật hồ sơ. Vui lòng thử lại.</string>
