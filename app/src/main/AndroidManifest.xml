@@ -34,6 +34,7 @@
         <activity android:name=".AdminDashboardActivity" />
         <activity android:name=".AdminManageUsersActivity" />
         <activity android:name=".AdminManagePlacesActivity" />
+        <activity android:name=".AdminReportsActivity" />
         <activity android:name=".AdminMessagesActivity" />
         <activity android:name=".OwnerDashboardActivity" />
         <activity android:name=".OwnerPortalActivity" />
