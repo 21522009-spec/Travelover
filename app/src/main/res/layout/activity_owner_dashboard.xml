@@ -259,6 +259,15 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="24dp" />
 
+        <Button
+            android:id="@+id/btnAddPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/owner_add_place_button"
+            android:backgroundTint="@color/purple_700"
+            android:textColor="@android:color/white" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -284,7 +293,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Trang chủ chủ sở hữu"
+                android:text="Quay về Trang điều hướng"
                 android:backgroundTint="@color/purple_700"
                 android:textColor="@android:color/white" />
         </LinearLayout>

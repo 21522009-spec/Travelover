@@ -91,13 +91,5 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/owner_portal_hint"
-            android:textColor="@color/black"
-            android:background="@color/teal_200"
-            android:padding="12dp"
-            android:alpha="0.8" />
     </LinearLayout>
 </ScrollView>
