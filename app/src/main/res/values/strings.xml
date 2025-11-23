@@ -41,7 +41,7 @@ Tổng chi phí: %6$s</string>
     <string name="add_place_success">Đã thêm địa điểm mới thành công!</string>
 
     <string name="admin_report_dialog_title">Báo cáo vi phạm</string>
-    <string name="admin_report_dialog_message">Danh sách báo cáo sẽ được đồng bộ từ hệ thống quản trị. Hiện tại dữ liệu minh họa chỉ hiển thị số lượng báo cáo.</string>
+    <string name="admin_report_dialog_message">Danh sách báo cáo chưa được cập nhật.</string>
     <string name="admin_user_email_template">Email: %1$s
 SĐT: %2$s</string>
     <string name="admin_user_unlock">Mở khóa</string>
