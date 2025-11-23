@@ -42,6 +42,8 @@ Tổng chi phí: %6$s</string>
 
     <string name="admin_report_dialog_title">Báo cáo vi phạm</string>
     <string name="admin_report_dialog_message">Danh sách báo cáo chưa được cập nhật.</string>
+    <string name="admin_reports_title">Báo cáo vi phạm</string>
+    <string name="admin_reports_placeholder">Màn hình báo cáo sẽ được cập nhật sau.</string>
     <string name="admin_user_email_template">Email: %1$s
 SĐT: %2$s</string>
     <string name="admin_user_unlock">Mở khóa</string>
