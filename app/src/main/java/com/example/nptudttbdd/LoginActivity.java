@@ -17,6 +17,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_PASSWORD = "admin";
+    private static final String OWNER_USERNAME = "owner";
+    private static final String OWNER_PASSWORD = "owner";
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private TextView btnRegister, btnForgot;
@@ -39,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
         btnForgot = findViewById(R.id.btnForgotPassword);
         progressBar = findViewById(R.id.progressBar);
 
-        // Khi người dùng đã đăng nhập sẽ được chuyển thẳng sang MainActivity
         if (authManager.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
@@ -60,6 +61,11 @@ public class LoginActivity extends AppCompatActivity {
 
         if (isAdminCredentials(emailInput, passwordInput)) {
             openAdminDashboard();
+            return;
+        }
+
+        if (isOwnerCredentials(emailInput, passwordInput)) {
+            openOwnerPortal();
             return;
         }
 
@@ -109,12 +115,22 @@ public class LoginActivity extends AppCompatActivity {
                 && ADMIN_PASSWORD.equals(password);
     }
 
+    private boolean isOwnerCredentials(@NonNull String username, @NonNull String password) {
+        return OWNER_USERNAME.equalsIgnoreCase(username)
+                && OWNER_PASSWORD.equals(password);
+    }
+
     private void openAdminDashboard() {
         Toast.makeText(this, R.string.admin_login_success, Toast.LENGTH_SHORT).show();
         startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
         finish();
     }
-}
 
+    private void openOwnerPortal() {
+        Toast.makeText(this, R.string.owner_login_success, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(LoginActivity.this, OwnerPortalActivity.class));
+        finish();
+    }
+}
 
 

@@ -204,7 +204,7 @@ public final class TravelDataRepository {
                 326,
                 context.getString(R.string.place_desc_giang_dien),
                 R.drawable.thac_giang_dien,
-                new String[]{"Hồ bơi ngoài trời", "BBQ ngoài trời", "Khu cắm trại", "Wifi miễn phí"});
+                new String[]{"Hồ bơi ngoài trời", "Khu vực cắm trại"});
 
         addPlaceInternal("place_dalat_hill",
                 "Homestay Đồi Gió",
@@ -224,7 +224,7 @@ public final class TravelDataRepository {
                 421,
                 "Biệt thự sát biển với hồ bơi riêng và khu vực BBQ, cách Bãi Sau 300m.",
                 R.drawable.sunset_villa_vungtau,
-                new String[]{"Hồ bơi riêng", "BBQ", "Ban công hướng biển"});
+                new String[]{"Hồ bơi riêng", "Ban công hướng biển"});
 
         addPlaceInternal("place_saigon_center",
                 "Căn hộ Trung tâm Sài Gòn",

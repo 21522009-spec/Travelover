@@ -39,10 +39,6 @@ public class MainActivity extends AppCompatActivity implements PlaceAdapter.OnPl
         edtSearch = findViewById(R.id.edtSearch);
         ImageButton btnSearch = findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(v -> openSearchWithCurrentQuery());
-        btnSearch.setOnLongClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, AddPlaceActivity.class));
-            return true;
-        });
         edtSearch.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_SEARCH
                     || (event != null

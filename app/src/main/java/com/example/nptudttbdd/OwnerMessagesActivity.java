@@ -1,5 +1,6 @@
 package com.example.nptudttbdd;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.EditText;
@@ -22,13 +23,17 @@ public class OwnerMessagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_messages);
-        ChatButtonManager.attach(this);
 
         repository = TravelDataRepository.getInstance(this);
         adapter = new ChatMessageAdapter();
 
         ImageView btnBack = findViewById(R.id.btnBack);
+        ImageView btnOwnerHome = findViewById(R.id.btnOwnerHome);
         btnBack.setOnClickListener(v -> finish());
+        btnOwnerHome.setOnClickListener(v ->
+                startActivity(new Intent(OwnerMessagesActivity.this, OwnerPortalActivity.class))
+        );
+
 
         RecyclerView recyclerView = findViewById(R.id.recyclerMessages);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

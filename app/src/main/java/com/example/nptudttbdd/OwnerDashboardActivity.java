@@ -26,14 +26,26 @@ public class OwnerDashboardActivity extends AppCompatActivity {
         TextView tvCleaningRooms = findViewById(R.id.tvCleaningRooms);
         TextView tvMaintenanceRooms = findViewById(R.id.tvMaintenanceRooms);
         Button btnViewDetails = findViewById(R.id.btnViewDetails);
+        Button btnOwnerMessages = findViewById(R.id.btnOwnerMessages);
+        Button btnOwnerPortal = findViewById(R.id.btnOwnerPortal);
+        Button btnAddPlace = findViewById(R.id.btnAddPlace);
 
         updateCards(tvRevenue, tvTotalRooms, tvBookedRooms, tvAvailableRooms, tvCleaningRooms, tvMaintenanceRooms);
 
         btnViewDetails.setOnClickListener(v -> showRevenueDetailDialog());
+        btnAddPlace.setOnClickListener(v ->
+                startActivity(new Intent(OwnerDashboardActivity.this, AddPlaceActivity.class))
+        );
         btnViewDetails.setOnLongClickListener(v -> {
             startActivity(new Intent(OwnerDashboardActivity.this, OwnerMessagesActivity.class));
             return true;
         });
+        btnOwnerMessages.setOnClickListener(v ->
+                startActivity(new Intent(OwnerDashboardActivity.this, OwnerMessagesActivity.class))
+        );
+        btnOwnerPortal.setOnClickListener(v ->
+                startActivity(new Intent(OwnerDashboardActivity.this, OwnerPortalActivity.class))
+        );
     }
 
     @Override
