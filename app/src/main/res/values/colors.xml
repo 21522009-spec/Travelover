@@ -9,4 +9,10 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FF5F1F</color>
     <color name="red">#FF0000</color>
+    <color name="primary_orange">#FF8A00</color>
+    <color name="home_background">#FFF8F2</color>
+    <color name="home_section_title">#FF5F1F</color>
+    <color name="profile_email_disabled">#99000000</color>
+    <color name="favorite_star_inactive">#BDBDBD</color>
+    <color name="favorite_star_active">#FFC107</color>
 </resources>

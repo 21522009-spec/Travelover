@@ -9,32 +9,31 @@
     android:padding="16dp"
     tools:context=".AdminManagePlacesActivity">
 
-    <!-- Header -->
-    <RelativeLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="#FF9900"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="12dp">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/transparent"
+        android:elevation="0dp">
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/ic_arrow_back"
-            android:contentDescription="Quay lại"
-            app:tint="@android:color/white"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Quản lý địa điểm"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_centerInParent="true" />
-    </RelativeLayout>
+            android:background="@drawable/bg_toolbar_gradient"
+            android:minHeight="?attr/actionBarSize"
+            android:paddingStart="20dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="28dp"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:subtitle="Theo dõi số liệu hệ thống"
+            app:subtitleTextColor="@android:color/white"
+            app:title="Bảng điều khiển Admin"
+            app:titleCentered="true"
+            app:titleTextColor="@android:color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <!-- Danh sách địa điểm -->
     <ScrollView

@@ -1,19 +1,21 @@
 package com.example.nptudttbdd;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.*;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.HashMap;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    EditText etEmail, etPassword, etName;
-    Button btnRegister;
-    FirebaseAuth mAuth;
+    private EditText etEmail, etPassword, etConfirmPassword, etName;
+    private Button btnRegister;
+    private TextView tvBackToLogin;
+    private FirebaseAuthManager authManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,41 +24,72 @@ public class RegisterActivity extends AppCompatActivity {
 
         etEmail = findViewById(R.id.edtEmail);
         etPassword = findViewById(R.id.edtPassword);
+        etConfirmPassword = findViewById(R.id.edtConfirmPassword);
         etName = findViewById(R.id.edtFullName);
         btnRegister = findViewById(R.id.btnRegister);
-        mAuth = FirebaseAuth.getInstance();
 
-        btnRegister.setOnClickListener(v -> {
-            String email = etEmail.getText().toString().trim();
-            String pass = etPassword.getText().toString().trim();
-            String name = etName.getText().toString().trim();
+        tvBackToLogin = findViewById(R.id.tvBackToLogin);
+        authManager = new FirebaseAuthManager();
 
-            if (TextUtils.isEmpty(email) || TextUtils.isEmpty(pass) || TextUtils.isEmpty(name)) {
-                Toast.makeText(this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
-                return;
+        btnRegister.setOnClickListener(v -> attemptRegister());
+        tvBackToLogin.setOnClickListener(v -> finish());
+    }
+
+    private void attemptRegister() {
+        if (!AuthInputValidator.ensureRequired(etName, "Vui lòng nhập họ tên!")) {
+            return;
+        }
+
+        if (!AuthInputValidator.ensureValidEmail(
+                etEmail,
+                "Vui lòng nhập email!",
+                "Email không hợp lệ!")) {
+            return;
+        }
+
+        if (!AuthInputValidator.ensureRequired(etPassword, "Vui lòng nhập mật khẩu!")) {
+            return;
+        }
+
+        if (!AuthInputValidator.ensureRequired(etConfirmPassword, "Vui lòng xác nhận mật khẩu!")) {
+            return;
+        }
+
+        String password = AuthInputValidator.getTrimmedText(etPassword);
+        String confirm = AuthInputValidator.getTrimmedText(etConfirmPassword);
+        if (!password.equals(confirm)) {
+            etConfirmPassword.setError("Mật khẩu không trùng khớp!");
+            etConfirmPassword.requestFocus();
+            return;
+        }
+
+        setProcessing(true);
+
+        String email = AuthInputValidator.getTrimmedText(etEmail);
+        String name = AuthInputValidator.getTrimmedText(etName);
+
+        authManager.registerUser(name, email, password, new FirebaseAuthManager.RegisterCallback() {
+            @Override
+            public void onSuccess(@NonNull FirebaseUser firebaseUser, @NonNull UserProfile profile) {
+                setProcessing(false);
+                Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                finish();
             }
 
-            mAuth.createUserWithEmailAndPassword(email, pass)
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            String userId = mAuth.getCurrentUser().getUid();
-
-                            HashMap<String, Object> map = new HashMap<>();
-                            map.put("name", name);
-                            map.put("email", email);
-                            map.put("role", "user");
-
-                            FirebaseDatabase.getInstance().getReference("Users")
-                                    .child(userId)
-                                    .setValue(map)
-                                    .addOnSuccessListener(unused -> {
-                                        Toast.makeText(this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
-                                        finish(); // Quay lại Login
-                                    });
-                        } else {
-                            Toast.makeText(this, "Đăng ký thất bại: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
+            @Override
+            public void onError(@NonNull String message) {
+                setProcessing(false);
+                Toast.makeText(RegisterActivity.this, message, Toast.LENGTH_LONG).show();
+            }
         });
+    }
+
+    private void setProcessing(boolean processing) {
+        btnRegister.setEnabled(!processing);
+        if (processing) {
+            btnRegister.setAlpha(0.6f);
+        } else {
+            btnRegister.setAlpha(1f);
+        }
     }
 }

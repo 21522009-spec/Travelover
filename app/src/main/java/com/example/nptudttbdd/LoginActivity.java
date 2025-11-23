@@ -2,7 +2,6 @@ package com.example.nptudttbdd;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,27 +11,28 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin";
+    private static final String OWNER_USERNAME = "owner";
+    private static final String OWNER_PASSWORD = "owner";
     private EditText etEmail, etPassword;
     private Button btnLogin;
     private TextView btnRegister, btnForgot;
 
     private ProgressBar progressBar;
-    private FirebaseAuth auth;
+
+    private FirebaseAuthManager authManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        auth = FirebaseAuth.getInstance();
+        authManager = new FirebaseAuthManager();
 
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
@@ -41,8 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         btnForgot = findViewById(R.id.btnForgotPassword);
         progressBar = findViewById(R.id.progressBar);
 
-        // Khi người dùng đã đăng nhập sẽ đưuoc chuyển thẳng sang MainActivity
-        if (auth.getCurrentUser() != null) {
+        if (authManager.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
         }
@@ -57,33 +56,81 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser() {
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
+        String emailInput = AuthInputValidator.getTrimmedText(etEmail);
+        String passwordInput = AuthInputValidator.getTrimmedText(etPassword);
 
-        if (TextUtils.isEmpty(email)) {
-            etEmail.setError("Vui lòng nhập email!");
-            return;
-        }
-        if (TextUtils.isEmpty(password)) {
-            etPassword.setError("Vui lòng nhập mật khẩu!");
+        if (isAdminCredentials(emailInput, passwordInput)) {
+            openAdminDashboard();
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        if (isOwnerCredentials(emailInput, passwordInput)) {
+            openOwnerPortal();
+            return;
+        }
 
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressBar.setVisibility(View.GONE);
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            finish();
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Sai email hoặc mật khẩu!", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+        if (!AuthInputValidator.ensureValidEmail(
+                etEmail,
+                "Vui lòng nhập email!",
+                "Email không hợp lệ!")) {
+            return;
+        }
+
+        if (!AuthInputValidator.ensureRequired(etPassword, "Vui lòng nhập mật khẩu!")) {
+            return;
+        }
+
+        setLoading(true);
+
+        authManager.loginUser(emailInput, passwordInput, new FirebaseAuthManager.LoginCallback() {
+            @Override
+            public void onSuccess(@NonNull FirebaseUser firebaseUser, UserProfile profile) {
+                setLoading(false);
+                String name = profile != null ? profile.getName() : null;
+                String message = name == null || name.isEmpty()
+                        ? "Đăng nhập thành công!"
+                        : "Chào mừng " + name + " trở lại!";
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onError(@NonNull String message) {
+                setLoading(false);
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setLoading(boolean loading) {
+        progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
+        btnLogin.setEnabled(!loading);
+        btnRegister.setEnabled(!loading);
+        btnForgot.setEnabled(!loading);
+    }
+
+    private boolean isAdminCredentials(@NonNull String username, @NonNull String password) {
+        return ADMIN_USERNAME.equalsIgnoreCase(username)
+                && ADMIN_PASSWORD.equals(password);
+    }
+
+    private boolean isOwnerCredentials(@NonNull String username, @NonNull String password) {
+        return OWNER_USERNAME.equalsIgnoreCase(username)
+                && OWNER_PASSWORD.equals(password);
+    }
+
+    private void openAdminDashboard() {
+        Toast.makeText(this, R.string.admin_login_success, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
+        finish();
+    }
+
+    private void openOwnerPortal() {
+        Toast.makeText(this, R.string.owner_login_success, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(LoginActivity.this, OwnerPortalActivity.class));
+        finish();
     }
 }
+
+

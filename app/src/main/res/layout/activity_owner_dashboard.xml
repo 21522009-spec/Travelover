@@ -55,6 +55,8 @@
                         app:tint="@color/orange" />
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Doanh thu hôm nay"
                         android:textSize="14sp"
                         android:textColor="@color/black"
@@ -62,6 +64,8 @@
 
                     <TextView
                         android:id="@+id/tvRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="2.500.000đ"
                         android:textStyle="bold"
                         android:textSize="18sp"
@@ -93,6 +97,8 @@
                         app:tint="@color/teal_700" />
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Tổng số phòng"
                         android:textSize="14sp"
                         android:textColor="@color/black"
@@ -100,6 +106,8 @@
 
                     <TextView
                         android:id="@+id/tvTotalRooms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="12"
                         android:textStyle="bold"
                         android:textSize="18sp"
@@ -131,6 +139,8 @@
                         app:tint="@color/purple_700" />
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="Đã đặt hôm nay"
                         android:textSize="14sp"
                         android:textColor="@color/black"
@@ -138,6 +148,8 @@
 
                     <TextView
                         android:id="@+id/tvBookedRooms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:text="8"
                         android:textStyle="bold"
                         android:textSize="18sp"
@@ -149,6 +161,8 @@
 
         <!-- Biểu đồ hoặc trạng thái phòng -->
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Trạng thái phòng"
             android:textStyle="bold"
             android:textSize="18sp"
@@ -172,12 +186,16 @@
                 android:gravity="center_vertical">
 
                 <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:text="Phòng trống"
                     android:textSize="16sp"
                     android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/tvAvailableRooms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="4"
                     android:textStyle="bold"
                     android:textColor="@color/teal_700" />
@@ -191,12 +209,16 @@
                 android:gravity="center_vertical">
 
                 <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:text="Phòng đang dọn dẹp"
                     android:textSize="16sp"
                     android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/tvCleaningRooms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="2"
                     android:textStyle="bold"
                     android:textColor="@color/orange" />
@@ -210,12 +232,16 @@
                 android:gravity="center_vertical">
 
                 <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:text="Phòng đang bảo trì"
                     android:textSize="16sp"
                     android:layout_weight="1" />
 
                 <TextView
                     android:id="@+id/tvMaintenanceRooms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="1"
                     android:textStyle="bold"
                     android:textColor="@color/red" />
@@ -232,6 +258,45 @@
             android:backgroundTint="@color/orange"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnAddPlace"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="@string/owner_add_place_button"
+            android:backgroundTint="@color/purple_700"
+            android:textColor="@android:color/white" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="12dp">
+
+            <Button
+                android:id="@+id/btnOwnerMessages"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tin nhắn"
+                android:backgroundTint="@color/teal_700"
+                android:textColor="@android:color/white" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnOwnerPortal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Quay về Trang điều hướng"
+                android:backgroundTint="@color/purple_700"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
