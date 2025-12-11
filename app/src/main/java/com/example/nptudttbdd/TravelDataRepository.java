@@ -8,9 +8,11 @@ import androidx.annotation.NonNull;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,13 +23,15 @@ public final class TravelDataRepository {
     private final List<Place> places = new ArrayList<>();
     private final List<UserAccount> users = new ArrayList<>();
     private final List<ChatMessage> adminConversation = new ArrayList<>();
-    private final List<ChatMessage> ownerConversation = new ArrayList<>();
+    private final List<OwnerConversation> ownerConversations = new ArrayList<>();
+    private final Map<String, List<ChatMessage>> ownerConversationMessages = new LinkedHashMap<>();
     private final Set<String> favoritePlaceIds = new LinkedHashSet<>();
 
     private TravelDataRepository(Context context) {
         seedPlaces(context);
         seedUsers();
         seedAdminMessages();
+        seedOwnerConversations();
         seedOwnerMessages();
     }
 
@@ -151,12 +155,38 @@ public final class TravelDataRepository {
     }
 
     @NonNull
-    public List<ChatMessage> getOwnerConversation() {
-        return new ArrayList<>(ownerConversation);
+    public List<OwnerConversation> getOwnerConversations() {
+        return new ArrayList<>(ownerConversations);
     }
 
-    public void appendOwnerMessage(@NonNull ChatMessage message) {
-        ownerConversation.add(message);
+    @NonNull
+    public String getDefaultOwnerConversationId() {
+        return ownerConversations.isEmpty() ? "" : ownerConversations.get(0).getId();
+    }
+
+    @NonNull
+    public List<ChatMessage> getOwnerConversation(@NonNull String conversationId) {
+        List<ChatMessage> messages = ownerConversationMessages.get(conversationId);
+        if (messages == null) {
+            return new ArrayList<>();
+        }
+        return new ArrayList<>(messages);
+    }
+
+    public void appendOwnerMessage(@NonNull String conversationId, @NonNull ChatMessage message) {
+        List<ChatMessage> messages = ownerConversationMessages.get(conversationId);
+        if (messages == null) {
+            messages = new ArrayList<>();
+            ownerConversationMessages.put(conversationId, messages);
+        }
+        messages.add(message);
+
+        OwnerConversation conversation = findOwnerConversationById(conversationId);
+        if (conversation != null) {
+            conversation.setLastMessage(message.getMessage());
+            conversation.setLastTime(formatTimestamp(System.currentTimeMillis()));
+            conversation.setHasNewMessage(false);
+        }
     }
 
     public void addReview(@NonNull String placeId, float rating, @NonNull String content) {
@@ -296,18 +326,81 @@ public final class TravelDataRepository {
                 "Mã đơn của mình là TVL-2401."));
     }
 
-    private void seedOwnerMessages() {
-        if (!ownerConversation.isEmpty()) {
+    private void seedOwnerConversations() {
+        if (!ownerConversations.isEmpty()) {
             return;
         }
-        ownerConversation.add(new ChatMessage(UUID.randomUUID().toString(),
+
+        OwnerConversation conversationOne = new OwnerConversation("owner_conversation_guesthouse",
+                "Host Gia Hưng",
+                "Mình muốn đặt phòng cho 2 người lớn và 1 nhỏ, giá như thế nào ạ?",
+                "15:46",
+                false);
+        OwnerConversation conversationTwo = new OwnerConversation("owner_conversation_admin",
+                "Admin Travelover",
+                "Mã xác nhận là: 783022",
+                "15:30",
+                true);
+        OwnerConversation conversationThree = new OwnerConversation("owner_conversation_mrlong",
+                "Mr.Long",
+                "Cuối tuần này mình còn phòng không shop?",
+                "Hôm nay",
+                false);
+        OwnerConversation conversationFour = new OwnerConversation("owner_conversation_misslan",
+                "Miss.Lan",
+                "Cảm ơn bạn!",
+                "25 Thg 9",
+                false);
+
+        ownerConversations.add(conversationOne);
+        ownerConversations.add(conversationTwo);
+        ownerConversations.add(conversationThree);
+        ownerConversations.add(conversationFour);
+
+        ownerConversationMessages.put(conversationOne.getId(), new ArrayList<>());
+        ownerConversationMessages.put(conversationTwo.getId(), new ArrayList<>());
+        ownerConversationMessages.put(conversationThree.getId(), new ArrayList<>());
+        ownerConversationMessages.put(conversationFour.getId(), new ArrayList<>());
+    }
+
+    private void seedOwnerMessages() {
+        String defaultConversationId = getDefaultOwnerConversationId();
+        if (defaultConversationId.isEmpty()) {
+            return;
+        }
+        List<ChatMessage> messages = ownerConversationMessages.get(defaultConversationId);
+        if (messages == null || !messages.isEmpty()) {
+            return;
+        }
+        messages.add(new ChatMessage(UUID.randomUUID().toString(),
                 ChatMessage.Sender.OWNER,
                 "Chào shop, chỗ mình còn phòng trống vào cuối tuần này không ạ?"));
-        ownerConversation.add(new ChatMessage(UUID.randomUUID().toString(),
+        messages.add(new ChatMessage(UUID.randomUUID().toString(),
                 ChatMessage.Sender.GUEST,
                 "Chào bạn, hiện tại còn 2 phòng đôi trống vào cuối tuần nhé!"));
-        ownerConversation.add(new ChatMessage(UUID.randomUUID().toString(),
+        messages.add(new ChatMessage(UUID.randomUUID().toString(),
                 ChatMessage.Sender.OWNER,
                 "Mình muốn đặt phòng cho 2 người lớn và 1 nhỏ, giá như thế nào ạ?"));
+
+        OwnerConversation conversation = findOwnerConversationById(defaultConversationId);
+        if (conversation != null) {
+            conversation.setLastMessage(messages.get(messages.size() - 1).getMessage());
+            conversation.setLastTime("15:46");
+        }
+    }
+
+    private OwnerConversation findOwnerConversationById(@NonNull String id) {
+        for (OwnerConversation conversation : ownerConversations) {
+            if (conversation.getId().equals(id)) {
+                return conversation;
+            }
+        }
+        return null;
+    }
+
+    @NonNull
+    private String formatTimestamp(long timestamp) {
+        java.text.DateFormat formatter = new java.text.SimpleDateFormat("HH:mm", Locale.getDefault());
+        return formatter.format(timestamp);
     }
 }

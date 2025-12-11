@@ -78,17 +78,23 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Homestay Đà Lạt"
                             android:textStyle="bold"
                             android:textSize="16sp"
                             android:textColor="#000" />
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Vị trí: Phường 3, Đà Lạt"
                             android:textColor="#555"
                             android:layout_marginTop="4dp" />
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Giá: 750.000đ/đêm"
                             android:textColor="#777"
                             android:layout_marginTop="2dp" />

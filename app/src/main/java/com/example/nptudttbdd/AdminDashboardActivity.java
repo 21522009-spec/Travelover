@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -34,7 +33,7 @@ public class AdminDashboardActivity extends AppCompatActivity {
 
         btnManageUsers.setOnClickListener(v -> startActivity(AdminManageUsersActivity.newIntent(this)));
         btnManagePlaces.setOnClickListener(v -> startActivity(AdminManagePlacesActivity.newIntent(this)));
-        btnViewReports.setOnClickListener(v -> showReportDialog());
+        btnViewReports.setOnClickListener(v -> startActivity(AdminReportsActivity.newIntent(this)));
     }
 
     @Override
@@ -50,13 +49,5 @@ public class AdminDashboardActivity extends AppCompatActivity {
         tvUserCount.setText(String.valueOf(repository.getTotalUsers()));
         tvPlaceCount.setText(String.valueOf(repository.getTotalPlaces()));
         tvReportCount.setText(String.valueOf(repository.getTotalReports()));
-    }
-
-    private void showReportDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.admin_report_dialog_title)
-                .setMessage(R.string.admin_report_dialog_message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
     }
 }

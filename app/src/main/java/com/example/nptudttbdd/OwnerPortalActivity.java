@@ -26,7 +26,7 @@ public class OwnerPortalActivity extends AppCompatActivity {
         );
 
         btnOpenMessages.setOnClickListener(v ->
-                startActivity(new Intent(OwnerPortalActivity.this, OwnerMessagesActivity.class))
+                startActivity(new Intent(OwnerPortalActivity.this, OwnerConversationsActivity.class))
         );
 
         btnBackToLogin.setOnClickListener(v -> {

@@ -42,6 +42,8 @@ Tổng chi phí: %6$s</string>
 
     <string name="admin_report_dialog_title">Báo cáo vi phạm</string>
     <string name="admin_report_dialog_message">Danh sách báo cáo chưa được cập nhật.</string>
+    <string name="admin_reports_title">Báo cáo vi phạm</string>
+    <string name="admin_reports_placeholder">Màn hình báo cáo sẽ được cập nhật sau.</string>
     <string name="admin_user_email_template">Email: %1$s
 SĐT: %2$s</string>
     <string name="admin_user_unlock">Mở khóa</string>
@@ -70,6 +72,12 @@ SĐT: %2$s</string>
     <string name="owner_portal_back_to_login">Đăng xuất</string>
     <string name="owner_portal_hint"></string>
     <string name="owner_add_place_button">Thêm địa điểm mới</string>
+
+    <string name="owner_conversation_title">Tin nhắn</string>
+    <string name="owner_conversation_search">Tìm kiếm</string>
+    <string name="owner_conversation_more">Tùy chọn khác</string>
+    <string name="owner_conversation_tab_conversations">HỘI THOẠI</string>
+    <string name="owner_conversation_tab_contacts">DANH BẠ</string>
 
     <string name="profile_update_success">Đã lưu thông tin hồ sơ.</string>
     <string name="profile_update_error">Không thể cập nhật hồ sơ. Vui lòng thử lại.</string>

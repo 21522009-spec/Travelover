@@ -23,13 +23,6 @@
             android:text="@string/owner_portal_welcome"
             android:layout_marginBottom="12dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/owner_portal_description"
-            android:textColor="@color/black"
-            android:layout_marginBottom="16dp" />
-
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

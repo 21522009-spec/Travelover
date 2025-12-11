@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Một user mẫu -->
+            <!-- user mẫu -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -78,17 +78,23 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Nguyễn Văn A"
                             android:textStyle="bold"
                             android:textSize="16sp"
                             android:textColor="#000" />
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Email: nguyenvana@example.com"
                             android:textColor="#555"
                             android:layout_marginTop="4dp" />
 
                         <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:text="Trạng thái: Hoạt động"
                             android:textColor="#4CAF50"
                             android:layout_marginTop="2dp" />

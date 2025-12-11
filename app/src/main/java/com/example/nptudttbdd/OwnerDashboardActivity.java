@@ -37,11 +37,11 @@ public class OwnerDashboardActivity extends AppCompatActivity {
                 startActivity(new Intent(OwnerDashboardActivity.this, AddPlaceActivity.class))
         );
         btnViewDetails.setOnLongClickListener(v -> {
-            startActivity(new Intent(OwnerDashboardActivity.this, OwnerMessagesActivity.class));
+            startActivity(new Intent(OwnerDashboardActivity.this, OwnerConversationsActivity.class));
             return true;
         });
         btnOwnerMessages.setOnClickListener(v ->
-                startActivity(new Intent(OwnerDashboardActivity.this, OwnerMessagesActivity.class))
+                startActivity(new Intent(OwnerDashboardActivity.this, OwnerConversationsActivity.class))
         );
         btnOwnerPortal.setOnClickListener(v ->
                 startActivity(new Intent(OwnerDashboardActivity.this, OwnerPortalActivity.class))

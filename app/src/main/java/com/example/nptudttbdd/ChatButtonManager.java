@@ -36,10 +36,11 @@ public final class ChatButtonManager {
     private static void setupNavigation(@NonNull AppCompatActivity activity,
                                         @NonNull FloatingActionButton chatButton) {
         chatButton.setOnClickListener(v -> {
-            if (activity instanceof OwnerMessagesActivity) {
+            if (activity instanceof OwnerMessagesActivity
+                    || activity instanceof OwnerConversationsActivity) {
                 return;
             }
-            Intent intent = new Intent(activity, OwnerMessagesActivity.class);
+            Intent intent = new Intent(activity, OwnerConversationsActivity.class);
             activity.startActivity(intent);
         });
     }
