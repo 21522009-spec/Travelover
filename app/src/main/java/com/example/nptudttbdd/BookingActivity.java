@@ -1,6 +1,7 @@
 package com.example.nptudttbdd;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -85,7 +86,22 @@ public class BookingActivity extends AppCompatActivity {
                         edtCheckOut.getText().toString(),
                         edtAdults.getText().toString(),
                         edtChildren.getText().toString());
-                showSummaryDialog(summary);
+                // Show confirmation dialog with booking summary
+                String message = getString(R.string.booking_summary_template,
+                        summary.checkIn,
+                        summary.checkOut,
+                        summary.nights,
+                        summary.adults,
+                        summary.children,
+                        TravelDataRepository.formatCurrency(summary.totalPrice));
+                new AlertDialog.Builder(this)
+                        .setTitle(R.string.booking_summary_title)
+                        .setMessage(message)
+                        .setPositiveButton("Thanh toán", (dialog, which) -> {
+                            proceedToPayment(summary);
+                        })
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show();
             } catch (IllegalArgumentException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -113,7 +129,6 @@ public class BookingActivity extends AppCompatActivity {
         if (checkIn.isEmpty() || checkOut.isEmpty()) {
             throw new IllegalArgumentException(getString(R.string.booking_error_missing_date));
         }
-
         Calendar checkInDate = Calendar.getInstance();
         Calendar checkOutDate = Calendar.getInstance();
         try {
@@ -122,22 +137,17 @@ public class BookingActivity extends AppCompatActivity {
         } catch (ParseException e) {
             throw new IllegalArgumentException(getString(R.string.booking_error_invalid_date));
         }
-
         if (!checkOutDate.after(checkInDate)) {
             throw new IllegalArgumentException(getString(R.string.booking_error_checkout));
         }
-
         long millisPerDay = 24 * 60 * 60 * 1000L;
         long nights = (checkOutDate.getTimeInMillis() - checkInDate.getTimeInMillis()) / millisPerDay;
         if (nights <= 0) {
             throw new IllegalArgumentException(getString(R.string.booking_error_checkout));
         }
-
         int adults = parsePositiveNumber(adultInput, 1);
         int children = parsePositiveNumber(childInput, 0);
-
         long totalPrice = nights * place.getPricePerNight();
-
         return new BookingSummary(checkIn, checkOut, nights, adults, children, totalPrice);
     }
 
@@ -153,20 +163,19 @@ public class BookingActivity extends AppCompatActivity {
         }
     }
 
-    private void showSummaryDialog(BookingSummary summary) {
-        String message = getString(R.string.booking_summary_template,
-                summary.checkIn,
-                summary.checkOut,
-                summary.nights,
-                summary.adults,
-                summary.children,
-                TravelDataRepository.formatCurrency(summary.totalPrice));
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.booking_summary_title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> finish())
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+    private void proceedToPayment(@NonNull BookingSummary summary) {
+        Intent intent = new Intent(BookingActivity.this, PaymentActivity.class);
+        intent.putExtra("placeId", place.getId());
+        intent.putExtra("placeName", place.getName());
+        intent.putExtra("location", place.getLocation());
+        intent.putExtra("checkIn", summary.checkIn);
+        intent.putExtra("checkOut", summary.checkOut);
+        intent.putExtra("adults", summary.adults);
+        intent.putExtra("children", summary.children);
+        intent.putExtra("totalPrice", summary.totalPrice);
+        startActivity(intent);
+        // Close booking screen after initiating payment
+        finish();
     }
 
     private static class BookingSummary {
@@ -176,7 +185,6 @@ public class BookingActivity extends AppCompatActivity {
         final int adults;
         final int children;
         final long totalPrice;
-
         private BookingSummary(String checkIn,
                                String checkOut,
                                long nights,

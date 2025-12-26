@@ -22,25 +22,18 @@ public class FirebaseAuthManager {
 
     public interface RegisterCallback {
         void onSuccess(@NonNull FirebaseUser firebaseUser, @NonNull UserProfile profile);
-
         void onError(@NonNull String message);
     }
-
     public interface LoginCallback {
         void onSuccess(@NonNull FirebaseUser firebaseUser, UserProfile profile);
-
         void onError(@NonNull String message);
     }
-
     public interface CompletionCallback {
         void onComplete();
-
         void onError(@NonNull String message);
     }
-
     public interface OtpRequestCallback {
         void onOtpSent();
-
         void onError(@NonNull String message);
     }
 
@@ -97,17 +90,19 @@ public class FirebaseAuthManager {
             return;
         }
 
-        UserProfile profile = new UserProfile(firebaseUser.getUid(),
+        // Tạo hồ sơ người dùng mới với role mặc định "user"
+        UserProfile profile = new UserProfile(
+                firebaseUser.getUid(),
                 name,
                 email,
                 "user",
-                "");
+                ""
+        );
         saveUserProfile(profile, new CompletionCallback() {
             @Override
             public void onComplete() {
                 callback.onSuccess(firebaseUser, profile);
             }
-
             @Override
             public void onError(@NonNull String message) {
                 callback.onError(message);
@@ -129,14 +124,13 @@ public class FirebaseAuthManager {
             callback.onError("Không thể lấy thông tin người dùng.");
             return;
         }
-
+        // Lấy UserProfile từ Realtime Database theo UID
         usersRef.child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserProfile profile = snapshot.getValue(UserProfile.class);
                 callback.onSuccess(firebaseUser, profile);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 callback.onError(getErrorMessage(error.toException()));
@@ -155,7 +149,6 @@ public class FirebaseAuthManager {
             callback.onError("Tính năng gửi OTP đang được vô hiệu hóa.");
             return;
         }
-
         findUserByEmail(email, new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -164,36 +157,36 @@ public class FirebaseAuthManager {
                     callback.onError("Không tìm thấy tài khoản với email này.");
                     return;
                 }
-
                 String uid = userSnapshot.getKey();
                 if (uid == null || uid.isEmpty()) {
                     callback.onError("Không thể xác định tài khoản người dùng.");
                     return;
                 }
-
+                // Tạo OTP ngẫu nhiên
                 String otp = generateOtp();
                 String otpHash = hashOtp(otp);
                 long expiresAt = System.currentTimeMillis() + OTP_VALIDITY_DURATION_MS;
                 PasswordResetOtp otpData = new PasswordResetOtp(otpHash, expiresAt, false);
-
+                // Lưu OTP tạm thời vào database để xác minh sau
                 passwordResetOtpsRef.child(uid)
                         .setValue(otpData)
-                        .addOnSuccessListener(unused -> otpEmailSender.sendOtpEmail(email, otp,
-                                new OtpEmailSender.Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        callback.onOtpSent();
-                                    }
-
-                                    @Override
-                                    public void onError(@NonNull String message) {
-                                        passwordResetOtpsRef.child(uid).removeValue();
-                                        callback.onError(message);
-                                    }
-                                }))
+                        .addOnSuccessListener(unused -> {
+                            // Gửi email chứa OTP cho người dùng
+                            otpEmailSender.sendOtpEmail(email, otp, new OtpEmailSender.Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    callback.onOtpSent();
+                                }
+                                @Override
+                                public void onError(@NonNull String message) {
+                                    // Gửi email thất bại -> xóa OTP khỏi database
+                                    passwordResetOtpsRef.child(uid).removeValue();
+                                    callback.onError(message);
+                                }
+                            });
+                        })
                         .addOnFailureListener(e -> callback.onError(getErrorMessage(e)));
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 callback.onError(getErrorMessage(error.toException()));
@@ -212,13 +205,12 @@ public class FirebaseAuthManager {
                     callback.onError("Không tìm thấy tài khoản với email này.");
                     return;
                 }
-
                 String uid = userSnapshot.getKey();
                 if (uid == null || uid.isEmpty()) {
                     callback.onError("Không thể xác định tài khoản người dùng.");
                     return;
                 }
-
+                // Lấy OTP hash lưu trong database
                 passwordResetOtpsRef.child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot otpSnapshot) {
@@ -227,37 +219,37 @@ public class FirebaseAuthManager {
                             callback.onError("Mã OTP không hợp lệ hoặc đã được sử dụng.");
                             return;
                         }
-
                         long now = System.currentTimeMillis();
                         if (otpData.getExpiresAt() < now) {
+                            // Hết hạn -> xóa OTP
                             passwordResetOtpsRef.child(uid).removeValue();
                             callback.onError("Mã OTP đã hết hạn. Vui lòng yêu cầu mã mới.");
                             return;
                         }
-
                         String expectedHash = otpData.getOtpHash();
                         if (!hashOtp(otp).equals(expectedHash)) {
                             callback.onError("Mã OTP không chính xác.");
                             return;
                         }
-
+                        // Đánh dấu OTP đã dùng và gửi email reset mật khẩu
                         passwordResetOtpsRef.child(uid).child("used").setValue(true)
-                                .addOnSuccessListener(unused -> auth.sendPasswordResetEmail(email)
-                                        .addOnSuccessListener(unused1 -> passwordResetOtpsRef.child(uid)
-                                                .removeValue()
-                                                .addOnSuccessListener(unused2 -> callback.onComplete())
-                                                .addOnFailureListener(e -> callback.onError(getErrorMessage(e))))
-                                        .addOnFailureListener(e -> callback.onError(getErrorMessage(e))))
+                                .addOnSuccessListener(unused ->
+                                        auth.sendPasswordResetEmail(email)
+                                                .addOnSuccessListener(unused1 ->
+                                                        passwordResetOtpsRef.child(uid).removeValue()
+                                                                .addOnSuccessListener(unused2 -> callback.onComplete())
+                                                                .addOnFailureListener(e -> callback.onError(getErrorMessage(e)))
+                                                )
+                                                .addOnFailureListener(e -> callback.onError(getErrorMessage(e)))
+                                )
                                 .addOnFailureListener(e -> callback.onError(getErrorMessage(e)));
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         callback.onError(getErrorMessage(error.toException()));
                     }
                 });
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 callback.onError(getErrorMessage(error.toException()));
@@ -304,7 +296,6 @@ public class FirebaseAuthManager {
             callback.onError("Thiếu UID người dùng để lưu hồ sơ.");
             return;
         }
-
         usersRef.child(uid)
                 .setValue(profile)
                 .addOnSuccessListener(unused -> callback.onComplete())

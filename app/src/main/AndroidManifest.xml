@@ -42,6 +42,8 @@
         <activity android:name=".OwnerMessagesActivity" />
         <activity android:name=".FavoritePlacesActivity" />
         <activity android:name=".UserProfileActivity" />
+        <activity android:name=".PaymentActivity" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="false" />

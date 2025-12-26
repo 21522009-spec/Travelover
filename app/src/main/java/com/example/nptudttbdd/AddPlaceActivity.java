@@ -9,7 +9,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class AddPlaceActivity extends AppCompatActivity {
@@ -59,13 +65,13 @@ public class AddPlaceActivity extends AppCompatActivity {
                 return;
             }
 
+            // Use existing place as reference for amenities
             Place reference;
             try {
                 reference = repository.getPlaceOrThrow("place_giang_dien");
             } catch (IllegalArgumentException ignored) {
                 reference = repository.getPlaces().isEmpty() ? null : repository.getPlaces().get(0);
             }
-
             ArrayList<String> amenities = reference != null
                     ? new ArrayList<>(reference.getAmenities())
                     : new ArrayList<>();
@@ -73,18 +79,46 @@ public class AddPlaceActivity extends AppCompatActivity {
                 amenities.add("Wifi miễn phí");
             }
 
+            if (description.isEmpty()) {
+                description = getString(R.string.add_place_default_description);
+            }
+
+            // Determine unique ID for new place
+            DatabaseReference placesRef = FirebaseDatabase.getInstance().getReference("Places");
+            String placeId = placesRef.push().getKey();
+            if (placeId == null || placeId.isEmpty()) {
+                placeId = UUID.randomUUID().toString();
+            }
+
+            // Create Place object and update local list
             Place place = new Place(
-                    UUID.randomUUID().toString(),
+                    placeId,
                     name,
                     location,
                     price,
-                    4.5f,
+                    0.0f,
                     0,
-                    description.isEmpty() ? getString(R.string.add_place_default_description) : description,
+                    description,
                     R.drawable.ic_placeholder,
                     amenities);
-
             repository.addPlace(place);
+
+            // Save new place to Firebase Realtime Database
+            String ownerId = FirebaseAuth.getInstance().getCurrentUser() != null
+                    ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                    : "";
+            Map<String, Object> placeData = new HashMap<>();
+            placeData.put("id", placeId);
+            placeData.put("name", name);
+            placeData.put("location", location);
+            placeData.put("pricePerNight", price);
+            placeData.put("rating", 0);
+            placeData.put("ratingCount", 0);
+            placeData.put("description", description);
+            placeData.put("amenities", amenities);
+            placeData.put("ownerId", ownerId);
+            placesRef.child(placeId).setValue(placeData);
+
             Toast.makeText(this, R.string.add_place_success, Toast.LENGTH_LONG).show();
             setResult(RESULT_OK);
             finish();

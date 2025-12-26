@@ -76,11 +76,10 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 "Email không hợp lệ!")) {
             return;
         }
-
         setLoading(true);
         currentEmail = AuthInputValidator.getTrimmedText(etEmail);
-
         if (!otpEmailConfigured) {
+            // Gửi link reset mật khẩu qua email nếu OTP chưa cấu hình
             authManager.sendPasswordReset(currentEmail, new FirebaseAuthManager.CompletionCallback() {
                 @Override
                 public void onComplete() {
@@ -90,7 +89,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                             Toast.LENGTH_LONG).show();
                     finish();
                 }
-
                 @Override
                 public void onError(@NonNull String message) {
                     setLoading(false);
@@ -99,7 +97,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             });
             return;
         }
-
+        // Nếu cấu hình OTP, gửi mã OTP đến email
         authManager.requestPasswordResetOtp(currentEmail, new FirebaseAuthManager.OtpRequestCallback() {
             @Override
             public void onOtpSent() {
@@ -110,7 +108,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         "Đã gửi mã OTP. Vui lòng kiểm tra hộp thư của bạn.",
                         Toast.LENGTH_LONG).show();
             }
-
             @Override
             public void onError(@NonNull String message) {
                 setLoading(false);
@@ -123,16 +120,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         if (!AuthInputValidator.ensureRequired(etOtp, "Vui lòng nhập mã OTP!")) {
             return;
         }
-
         String otp = AuthInputValidator.getTrimmedText(etOtp);
         String email = currentEmail.isEmpty() ? AuthInputValidator.getTrimmedText(etEmail) : currentEmail;
         if (email.isEmpty()) {
             Toast.makeText(this, "Email không hợp lệ. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
             return;
         }
-
         setLoading(true);
-
         authManager.verifyOtpAndSendResetEmail(email, otp, new FirebaseAuthManager.CompletionCallback() {
             @Override
             public void onComplete() {
@@ -142,8 +136,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 finish();
             }
-
-
             @Override
             public void onError(@NonNull String message) {
                 setLoading(false);
