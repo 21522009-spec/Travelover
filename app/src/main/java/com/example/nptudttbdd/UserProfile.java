@@ -103,4 +103,15 @@ public class UserProfile {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    private String avatarBase64;
+
+    public String getAvatarBase64() {
+        return avatarBase64;
+    }
+
+    public void setAvatarBase64(String avatarBase64) {
+        this.avatarBase64 = avatarBase64;
+    }
+
 }
