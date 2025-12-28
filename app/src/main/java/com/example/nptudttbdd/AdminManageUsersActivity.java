@@ -17,6 +17,9 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.appbar.MaterialToolbar;
 import java.util.List;
 
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.DatabaseReference;
+
 public class AdminManageUsersActivity extends AppCompatActivity {
 
     public static Intent newIntent(@NonNull Context context) {
@@ -69,6 +72,12 @@ public class AdminManageUsersActivity extends AppCompatActivity {
             repository.toggleUserLock(user.getId());
             updateStatus(tvStatus, user);
             btnLock.setText(user.isLocked() ? R.string.admin_user_unlock : R.string.admin_user_lock);
+            // Cập nhật trạng thái phê duyệt trên Firebase khi khóa/mở khóa
+            String uid = user.getId();
+            if (!uid.contains("-")) {  // chỉ cập nhật nếu ID có vẻ là UID thật (bỏ qua user mẫu)
+                FirebaseDatabase.getInstance().getReference("Users").child(uid)
+                        .child("approved").setValue(!user.isLocked());
+            }
             Toast.makeText(this,
                     user.isLocked() ? R.string.admin_user_locked : R.string.admin_user_unlocked,
                     Toast.LENGTH_SHORT).show();

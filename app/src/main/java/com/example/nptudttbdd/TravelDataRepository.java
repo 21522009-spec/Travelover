@@ -42,6 +42,8 @@ public final class TravelDataRepository {
         return instance;
     }
 
+
+
     @NonNull
     public List<Place> getPlaces() {
         return new ArrayList<>(places);
@@ -125,6 +127,10 @@ public final class TravelDataRepository {
     @NonNull
     public List<UserAccount> getUsers() {
         return new ArrayList<>(users);
+    }
+
+    public void addUser(@NonNull UserAccount user) {
+        users.add(user);
     }
 
     public void toggleUserLock(@NonNull String userId) {

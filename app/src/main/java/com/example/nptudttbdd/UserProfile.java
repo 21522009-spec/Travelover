@@ -12,6 +12,8 @@ public class UserProfile {
     private String avatarUrl;
     private String phone;
     private String address;
+    private boolean approved = true;
+
 
     // Bắt buộc cần constructor rỗng cho Firebase
     public UserProfile() {
@@ -112,6 +114,13 @@ public class UserProfile {
 
     public void setAvatarBase64(String avatarBase64) {
         this.avatarBase64 = avatarBase64;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 
 }

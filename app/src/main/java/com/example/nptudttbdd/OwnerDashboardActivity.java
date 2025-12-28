@@ -23,6 +23,31 @@ public class OwnerDashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_owner_dashboard);
 
+        // Greeting TextView for owner
+        TextView tvWelcome = findViewById(R.id.tvOwnerWelcome);
+        // Display welcome message with owner's name
+        String currentUid = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : "";
+        if (!currentUid.isEmpty()) {
+            DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference("Users");
+            usersRef.child(currentUid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot snapshot) {
+                    UserProfile profile = snapshot.getValue(UserProfile.class);
+                    if (profile != null) {
+                        tvWelcome.setText("Xin chào, " + profile.getName() + "!");
+                    } else {
+                        tvWelcome.setText("Xin chào!");
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Handle error if needed
+                }
+            });
+        }
+
         TextView tvRevenue = findViewById(R.id.tvRevenue);
         TextView tvTotalRooms = findViewById(R.id.tvTotalRooms);
         TextView tvBookedRooms = findViewById(R.id.tvBookedRooms);
@@ -44,9 +69,13 @@ public class OwnerDashboardActivity extends AppCompatActivity {
         btnOwnerMessages.setOnClickListener(v ->
                 startActivity(new Intent(OwnerDashboardActivity.this, OwnerConversationsActivity.class))
         );
-        btnOwnerPortal.setOnClickListener(v ->
-                startActivity(new Intent(OwnerDashboardActivity.this, OwnerPortalActivity.class))
-        );
+        // Replace the back-to-dashboard button with a logout button
+        btnOwnerPortal.setText(R.string.owner_portal_back_to_login);
+        btnOwnerPortal.setOnClickListener(v -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(OwnerDashboardActivity.this, LoginActivity.class));
+            finish();
+        });
     }
 
     @Override

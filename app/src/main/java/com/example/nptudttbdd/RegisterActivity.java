@@ -3,6 +3,7 @@ package com.example.nptudttbdd;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etEmail, etPassword, etConfirmPassword, etName;
     private Button btnRegister;
     private TextView tvBackToLogin;
+    private RadioGroup radioRole;
     private FirebaseAuthManager authManager;
 
     @Override
@@ -29,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
 
         tvBackToLogin = findViewById(R.id.tvBackToLogin);
+        radioRole = findViewById(R.id.radioRole);
         authManager = new FirebaseAuthManager();
 
         btnRegister.setOnClickListener(v -> attemptRegister());
@@ -67,12 +70,32 @@ public class RegisterActivity extends AppCompatActivity {
 
         String email = AuthInputValidator.getTrimmedText(etEmail);
         String name = AuthInputValidator.getTrimmedText(etName);
+        int selectedId = radioRole.getCheckedRadioButtonId();
+        final String role = (selectedId == R.id.radioOwner) ? "owner" : "user";
 
         authManager.registerUser(name, email, password, new FirebaseAuthManager.RegisterCallback() {
             @Override
             public void onSuccess(@NonNull FirebaseUser firebaseUser, @NonNull UserProfile profile) {
+                if ("owner".equals(role)) {
+                    // Cập nhật thông tin role và approved trên Firebase Realtime Database
+                    authManager.getUserProfileReference(firebaseUser.getUid())
+                            .child("role").setValue("owner");
+                    authManager.getUserProfileReference(firebaseUser.getUid())
+                            .child("approved").setValue(false);
+                    // Cập nhật đối tượng profile trong ứng dụng
+                    profile.setRole("owner");
+                    profile.setApproved(false);
+                    // Thêm tài khoản owner vào danh sách để Admin có thể thấy (locked = true ban đầu)
+                    TravelDataRepository.getInstance(getApplicationContext())
+                            .addUser(new UserAccount(firebaseUser.getUid(), name, email, "", true));
+                    Toast.makeText(RegisterActivity.this,
+                            "Đăng ký thành công! Vui lòng chờ quản trị viên phê duyệt tài khoản.",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(RegisterActivity.this,
+                            "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                }
                 setProcessing(false);
-                Toast.makeText(RegisterActivity.this, "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
                 finish();
             }
 

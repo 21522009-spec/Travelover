@@ -64,11 +64,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        if (isOwnerCredentials(emailInput, passwordInput)) {
-            openOwnerPortal();
-            return;
-        }
-
         if (!AuthInputValidator.ensureValidEmail(
                 etEmail,
                 "Vui lòng nhập email!",
@@ -86,8 +81,35 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(@NonNull FirebaseUser firebaseUser, UserProfile profile) {
                 setLoading(false);
+                // Kiểm tra trạng thái phê duyệt của tài khoản
+                if (profile != null && !profile.isApproved()) {
+                    String msg;
+                    if ("owner".equals(profile.getRole())) {
+                        msg = "Tài khoản của bạn chưa được quản trị viên phê duyệt.";
+                    } else {
+                        msg = "Tài khoản của bạn đã bị khóa.";
+                    }
+                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_LONG).show();
+                    authManager.logout();  // Đăng xuất tài khoản chưa được phép
+                    return;
+                }
+                // Chuyển hướng theo vai trò tài khoản sau khi đăng nhập thành công
+                if (profile != null && "owner".equals(profile.getRole())) {
+                    String name = profile.getName();
+                    String welcome = (name == null || name.isEmpty())
+                            ? "Đăng nhập thành công!"
+                            : "Chào mừng " + name + " trở lại!";
+                    Toast.makeText(LoginActivity.this, welcome, Toast.LENGTH_SHORT).show();
+                    // Mở giao diện Owner (OwnerDashboardActivity) và truyền tên Owner
+                    Intent ownerIntent = new Intent(LoginActivity.this, OwnerDashboardActivity.class);
+                    ownerIntent.putExtra("ownerName", profile.getName());
+                    startActivity(ownerIntent);
+                    finish();
+                    return;
+                }
+                // Mặc định: tài khoản user (khách)
                 String name = profile != null ? profile.getName() : null;
-                String message = name == null || name.isEmpty()
+                String message = (name == null || name.isEmpty())
                         ? "Đăng nhập thành công!"
                         : "Chào mừng " + name + " trở lại!";
                 Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();

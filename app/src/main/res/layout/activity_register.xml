@@ -82,6 +82,25 @@
                 android:padding="12dp"
                 android:layout_marginBottom="24dp"/>
 
+            <RadioGroup
+                android:id="@+id/radioRole"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp">
+                <RadioButton
+                    android:id="@+id/radioUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng ký với tư cách Khách"
+                    android:checked="true"/>
+                <RadioButton
+                    android:id="@+id/radioOwner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đăng ký với tư cách Chủ phòng"/>
+            </RadioGroup>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
