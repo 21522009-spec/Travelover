@@ -52,5 +52,9 @@
         <activity
             android:name=".ForgotPasswordActivity"
         android:exported="false" />
+    
+        <activity android:name=".OwnerManagePlacesActivity" />
+        <activity android:name=".OwnerEditPlaceActivity" />
+
     </application>
 </manifest>

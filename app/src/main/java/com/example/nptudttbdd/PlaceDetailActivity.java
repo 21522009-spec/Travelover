@@ -2,7 +2,6 @@ package com.example.nptudttbdd;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
@@ -57,11 +56,10 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        // Hiển thị ảnh: ưu tiên imagePath nếu có
-        String path = place.getImagePath();
-        if (path != null && !path.isEmpty()) {
-            // Nạp ảnh từ file đường dẫn
-            imgPlace.setImageBitmap(BitmapFactory.decodeFile(path));
+        // Unified image loader: URL / data URI / local file path / fallback res.
+        String img = place.getImagePath();
+        if (!TextUtils.isEmpty(img)) {
+            ImageLoader.load(imgPlace, img, place.getImageResId());
         } else {
             imgPlace.setImageResource(place.getImageResId());
         }

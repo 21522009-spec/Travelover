@@ -60,7 +60,14 @@ public class BookingActivity extends AppCompatActivity {
         Button btnConfirm = findViewById(R.id.btnConfirmBooking);
 
         btnBack.setOnClickListener(v -> finish());
-        imgPlace.setImageResource(place.getImageResId());
+
+        String img = place.getImagePath();
+        if (!TextUtils.isEmpty(img)) {
+            ImageLoader.load(imgPlace, img, place.getImageResId());
+        } else {
+            imgPlace.setImageResource(place.getImageResId());
+        }
+
         tvPlaceName.setText(place.getName());
         tvLocation.setText(place.getLocation());
         ratingBar.setRating(place.getRating());
@@ -173,6 +180,9 @@ public class BookingActivity extends AppCompatActivity {
         intent.putExtra("adults", summary.adults);
         intent.putExtra("children", summary.children);
         intent.putExtra("totalPrice", summary.totalPrice);
+
+        intent.putExtra("nights", summary.nights);
+        intent.putExtra("pricePerNight", place.getPricePerNight());
         startActivity(intent);
         // Close booking screen after initiating payment
         finish();
@@ -185,6 +195,7 @@ public class BookingActivity extends AppCompatActivity {
         final int adults;
         final int children;
         final long totalPrice;
+
         private BookingSummary(String checkIn,
                                String checkOut,
                                long nights,

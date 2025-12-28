@@ -7,6 +7,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Place model used across the app.
+ *
+ * imagePath can be:
+ * - empty string: no custom image
+ * - local file path (legacy)
+ * - http(s) URL
+ * - data URI: data:image/jpeg;base64,...
+ */
 public class Place implements Serializable {
 
     private final String id;
@@ -22,7 +31,7 @@ public class Place implements Serializable {
     private final List<String> amenities;
     private final List<PlaceReview> reviews = new ArrayList<>();
 
-    // Constructor cũ (không có imagePath)
+    // Legacy constructor (no imagePath)
     public Place(@NonNull String id,
                  @NonNull String name,
                  @NonNull String location,
@@ -42,10 +51,10 @@ public class Place implements Serializable {
         this.description = description;
         this.imageResId = imageResId;
         this.amenities = new ArrayList<>(amenities);
-        this.imagePath = null;
+        this.imagePath = "";
     }
 
-    // Constructor mới có imagePath
+    // Constructor with imagePath (URL / data URI / file path)
     public Place(@NonNull String id,
                  @NonNull String name,
                  @NonNull String location,
@@ -110,14 +119,18 @@ public class Place implements Serializable {
         return imageResId;
     }
 
+    /**
+     * Optional custom image reference (URL, data URI, or file path).
+     * Empty string means no custom image.
+     */
     @NonNull
-    public List<String> getAmenities() {
-        return new ArrayList<>(amenities);
+    public String getImagePath() {
+        return imagePath == null ? "" : imagePath;
     }
 
     @NonNull
-    public String getImagePath() {
-        return imagePath;
+    public List<String> getAmenities() {
+        return new ArrayList<>(amenities);
     }
 
     public synchronized void addReview(@NonNull PlaceReview review) {

@@ -66,6 +66,7 @@ public class OwnerDashboardActivity extends AppCompatActivity {
         Button btnOwnerMessages = findViewById(R.id.btnOwnerMessages);
         Button btnOwnerPortal = findViewById(R.id.btnOwnerPortal);
         Button btnAddPlace = findViewById(R.id.btnAddPlace);
+        Button btnManagePlaces = findViewById(R.id.btnManagePlaces);
 
         // Load initial dashboard stats
         updateDashboardStats(tvRevenue, tvTotalRooms, tvBookedRooms, tvAvailableRooms, tvCleaningRooms, tvMaintenanceRooms);
@@ -74,6 +75,10 @@ public class OwnerDashboardActivity extends AppCompatActivity {
         btnAddPlace.setOnClickListener(v ->
                 startActivity(new Intent(OwnerDashboardActivity.this, AddPlaceActivity.class))
         );
+        btnManagePlaces.setOnClickListener(v ->
+                startActivity(new Intent(OwnerDashboardActivity.this, OwnerManagePlacesActivity.class))
+        );
+
         btnOwnerMessages.setOnClickListener(v ->
                 startActivity(new Intent(OwnerDashboardActivity.this, OwnerConversationsActivity.class))
         );

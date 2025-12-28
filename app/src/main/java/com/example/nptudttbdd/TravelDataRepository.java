@@ -63,6 +63,27 @@ public final class TravelDataRepository {
         places.add(0, place);
     }
 
+    /**
+     * Add or replace place by id. Used for syncing dynamic places (e.g., from Firebase).
+     */
+    public void upsertPlace(@NonNull Place place) {
+        for (int i = 0; i < places.size(); i++) {
+            if (places.get(i).getId().equals(place.getId())) {
+                places.set(i, place);
+                return;
+            }
+        }
+        places.add(0, place);
+    }
+
+    public boolean containsPlaceId(@NonNull String placeId) {
+        for (Place p0 : places) {
+            if (p0.getId().equals(placeId)) return true;
+        }
+        return false;
+    }
+
+
     public void removePlace(@NonNull String placeId) {
         for (int i = 0; i < places.size(); i++) {
             if (places.get(i).getId().equals(placeId)) {

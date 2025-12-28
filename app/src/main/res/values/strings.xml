@@ -34,11 +34,6 @@ Tổng chi phí: %6$s</string>
     <string name="review_success_message">Cảm ơn bạn đã đánh giá %1$s với %2$.1f sao!
 "%3$s"</string>
 
-    <string name="add_place_choose_image_message">Tính năng chọn ảnh hiện tại vẫn chưa được thêm.</string>
-    <string name="add_place_error_required">Vui lòng nhập đầy đủ tên, vị trí và giá.</string>
-    <string name="add_place_error_price">Giá phải là số hợp lệ.</string>
-    <string name="add_place_default_description">Chưa có mô tả chi tiết cho địa điểm này.</string>
-    <string name="add_place_success">Đã thêm địa điểm mới thành công!</string>
 
     <string name="admin_report_dialog_title">Báo cáo vi phạm</string>
     <string name="admin_report_dialog_message">Danh sách báo cáo chưa được cập nhật.</string>
@@ -104,4 +99,52 @@ SĐT: %2$s</string>
     <string name="forgot_password_resend">Không nhận được mã? Gửi lại</string>
     <string name="forgot_password_send_reset_link_button">Gửi email đặt lại mật khẩu</string>
     <string name="forgot_password_reset_email_sent">Đã gửi email đặt lại mật khẩu. Vui lòng kiểm tra hộp thư của bạn.</string>
+
+    <!-- Payment -->
+    <string name="payment_title">Thanh toán</string>
+    <string name="payment_method_title">Phương thức thanh toán</string>
+    <string name="payment_method_wallet">Ví điện tử</string>
+    <string name="payment_method_card">Thẻ ngân hàng</string>
+    <string name="payment_method_cash">Tiền mặt</string>
+    <string name="payment_price_title">Chi tiết giá</string>
+    <string name="payment_total">Tổng cộng</string>
+    <string name="payment_pay_now">Thanh toán ngay</string>
+    <string name="payment_note">Bằng việc thanh toán, bạn đồng ý với điều khoản và chính sách của ứng dụng.</string>
+    <string name="payment_processing">Đang xử lý thanh toán...</string>
+
+    <!-- Owner manage places -->
+    <string name="owner_manage_places_title">Quản lý phòng</string>
+    <string name="owner_manage_places_button">Quản lý phòng đã tạo</string>
+    <string name="owner_manage_places_empty">Bạn chưa tạo phòng nào.</string>
+    <string name="owner_manage_places_add">Thêm phòng</string>
+
+    <string name="owner_edit_place_title">Chỉnh sửa phòng</string>
+    <string name="owner_place_status_switch">Kích hoạt</string>
+    <string name="owner_place_status_active">Đang hoạt động</string>
+    <string name="owner_place_status_inactive">Tạm ẩn</string>
+    <string name="owner_place_edit">Sửa</string>
+    <string name="owner_place_delete">Xóa</string>
+    <string name="owner_place_save">Lưu thay đổi</string>
+    <string name="owner_place_delete_title">Xóa phòng</string>
+    <string name="owner_place_delete_message">Bạn chắc chắn muốn xóa phòng này? Hành động này không thể hoàn tác.</string>
+    <string name="owner_place_deleted">Đã xóa phòng.</string>
+
+    <!-- Add place -->
+    <string name="add_place_title">Thêm phòng</string>
+    <string name="add_place_name_hint">Tên phòng / địa điểm</string>
+    <string name="add_place_location_hint">Địa chỉ / khu vực</string>
+    <string name="add_place_price_hint">Giá mỗi đêm (VND)</string>
+    <string name="add_place_desc_hint">Mô tả</string>
+    <string name="add_place_choose_images">Chọn ảnh (có thể chọn nhiều)</string>
+    <string name="add_place_save">Lưu phòng</string>
+    <string name="add_place_error_required">Vui lòng nhập tên, địa chỉ và giá.</string>
+    <string name="add_place_error_price">Giá không hợp lệ.</string>
+    <string name="add_place_error_no_image">Vui lòng chọn ít nhất 1 ảnh.</string>
+    <string name="add_place_success">Đã thêm phòng thành công!</string>
+
+    <!-- Common -->
+    <string name="place_image_desc">Ảnh phòng</string>
+    <string name="remove_image">Xóa ảnh</string>
+    <string name="back">Back</string>
+
 </resources>

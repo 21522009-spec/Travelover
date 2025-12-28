@@ -1,5 +1,6 @@
 package com.example.nptudttbdd;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,13 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.PlaceViewHol
         }
 
         void bind(Place place) {
-            imgPlace.setImageResource(place.getImageResId());
+            String img = place.getImagePath();
+            if (!TextUtils.isEmpty(img)) {
+                ImageLoader.load(imgPlace, img, place.getImageResId());
+            } else {
+                imgPlace.setImageResource(place.getImageResId());
+            }
+
             tvName.setText(place.getName());
             tvLocation.setText(place.getLocation());
             String priceText = String.format(Locale.getDefault(),

@@ -275,6 +275,17 @@
             android:textAllCaps="false"
             android:layout_marginBottom="16dp" />
 
+        <!-- Nút quản lý phòng đã tạo -->
+        <Button
+            android:id="@+id/btnManagePlaces"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/owner_manage_places_button"
+            android:backgroundTint="@color/orange"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:layout_marginBottom="16dp" />
+
         <!-- Các nút chức năng tin nhắn và portal -->
         <LinearLayout
             android:layout_width="match_parent"

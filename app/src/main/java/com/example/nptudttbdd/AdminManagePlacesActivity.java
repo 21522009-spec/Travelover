@@ -3,17 +3,19 @@ package com.example.nptudttbdd;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
@@ -61,7 +63,13 @@ public class AdminManagePlacesActivity extends AppCompatActivity {
         EditText etReason = itemView.findViewById(R.id.etDeleteReason);
         Button btnConfirmDelete = itemView.findViewById(R.id.btnConfirmDelete);
 
-        imgPlace.setImageResource(place.getImageResId());
+        String img = place.getImagePath();
+        if (!TextUtils.isEmpty(img)) {
+            ImageLoader.load(imgPlace, img, place.getImageResId());
+        } else {
+            imgPlace.setImageResource(place.getImageResId());
+        }
+
         tvName.setText(place.getName());
         tvLocation.setText(place.getLocation());
         tvPrice.setText(getString(R.string.admin_place_price_template,
