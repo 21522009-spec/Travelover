@@ -46,7 +46,12 @@ public class OwnerDashboardActivity extends AppCompatActivity {
                 }
                 @Override
                 public void onCancelled(DatabaseError error) {
-                    // Handle error if needed
+                    new AlertDialog.Builder(OwnerDashboardActivity.this)
+                            .setTitle("Doanh thu theo tháng")
+                            .setMessage("Không thể tải dữ liệu doanh thu: " + error.getMessage()
+                                    + "\n\nKiểm tra Firebase Rules cho /Payments (Permission denied).")
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show();
                 }
             });
         }
