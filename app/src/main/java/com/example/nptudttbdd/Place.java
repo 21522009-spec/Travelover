@@ -18,9 +18,11 @@ public class Place implements Serializable {
     private float ratingTotal;
     private final String description;
     private final @DrawableRes int imageResId;
+    private final String imagePath;
     private final List<String> amenities;
     private final List<PlaceReview> reviews = new ArrayList<>();
 
+    // Constructor cũ (không có imagePath)
     public Place(@NonNull String id,
                  @NonNull String name,
                  @NonNull String location,
@@ -40,6 +42,31 @@ public class Place implements Serializable {
         this.description = description;
         this.imageResId = imageResId;
         this.amenities = new ArrayList<>(amenities);
+        this.imagePath = null;
+    }
+
+    // Constructor mới có imagePath
+    public Place(@NonNull String id,
+                 @NonNull String name,
+                 @NonNull String location,
+                 long pricePerNight,
+                 float rating,
+                 int ratingCount,
+                 @NonNull String description,
+                 @DrawableRes int imageResId,
+                 @NonNull List<String> amenities,
+                 @NonNull String imagePath) {
+        this.id = id;
+        this.name = name;
+        this.location = location;
+        this.pricePerNight = pricePerNight;
+        this.rating = clampRating(rating);
+        this.ratingCount = Math.max(0, ratingCount);
+        this.ratingTotal = this.rating * this.ratingCount;
+        this.description = description;
+        this.imageResId = imageResId;
+        this.amenities = new ArrayList<>(amenities);
+        this.imagePath = imagePath;
     }
 
     private static float clampRating(float rating) {
@@ -86,6 +113,11 @@ public class Place implements Serializable {
     @NonNull
     public List<String> getAmenities() {
         return new ArrayList<>(amenities);
+    }
+
+    @NonNull
+    public String getImagePath() {
+        return imagePath;
     }
 
     public synchronized void addReview(@NonNull PlaceReview review) {

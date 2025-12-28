@@ -1,384 +1,312 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ownerDashboardScroll"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@android:color/white">
+    android:background="@color/white"
+    android:padding="16dp"
+    tools:context=".OwnerDashboardActivity">
 
     <LinearLayout
-        android:id="@+id/ownerDashboardRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <!-- Header: Welcome -->
-        <androidx.cardview.widget.CardView
+        <!-- Lời chào chủ phòng -->
+        <TextView
+            android:id="@+id/tvOwnerWelcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            android:layout_marginBottom="12dp">
+            android:text="Xin chào, Chủ nhà!"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Các chỉ số chính (Doanh thu, Tổng phòng, Đã đặt) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:weightSum="3">
+
+            <!-- Thẻ Doanh thu -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="6dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_revenue"
+                        app:tint="@color/orange" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Doanh thu hôm nay"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="6dp" />
+
+                    <TextView
+                        android:id="@+id/tvRevenue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0đ"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/orange"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Thẻ Tổng phòng -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="6dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_room"
+                        app:tint="@color/teal_700" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tổng số phòng"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="6dp" />
+
+                    <TextView
+                        android:id="@+id/tvTotalRooms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/teal_700"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Thẻ Đã đặt -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="6dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_booking"
+                        app:tint="@color/purple_700" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đã đặt hôm nay"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="6dp" />
+
+                    <TextView
+                        android:id="@+id/tvBookedRooms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@color/purple_700"
+                        android:layout_marginTop="4dp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <!-- Tiêu đề phần trạng thái phòng -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trạng thái phòng"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Danh sách thống kê trạng thái -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:divider="@android:color/darker_gray"
+            android:showDividers="middle">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
-                <!-- Avatar placeholder -->
                 <TextView
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:gravity="center"
-                    android:text="O"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/white"
-                    android:backgroundTint="?attr/colorPrimary"
-                    android:background="@android:drawable/btn_default"
-                    android:layout_marginEnd="12dp" />
-
-                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:text="Phòng trống"
+                    android:textSize="16sp"
+                    android:layout_weight="1" />
 
-                    <!-- ID phải khớp với Activity -->
-                    <TextView
-                        android:id="@+id/tvOwnerWelcome"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Xin chào!"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Quản lý phòng và doanh thu của bạn tại đây."
-                        android:textSize="13sp"
-                        android:textColor="@android:color/darker_gray"
-                        android:layout_marginTop="4dp" />
-                </LinearLayout>
-
+                <TextView
+                    android:id="@+id/tvAvailableRooms"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textStyle="bold"
+                    android:textColor="@color/teal_700" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Revenue card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true"
-            android:layout_marginBottom="12dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Doanh thu"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black" />
+                    android:text="Phòng đang dọn dẹp"
+                    android:textSize="16sp"
+                    android:layout_weight="1" />
 
-                <!-- ID phải khớp với Activity -->
                 <TextView
-                    android:id="@+id/tvRevenue"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tvCleaningRooms"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 đ"
-                    android:textSize="24sp"
+                    android:text="0"
                     android:textStyle="bold"
-                    android:textColor="@android:color/black"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- ID phải khớp với Activity -->
-                <Button
-                    android:id="@+id/btnViewDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Xem chi tiết doanh thu"
-                    android:allCaps="false" />
+                    android:textColor="@color/orange" />
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
 
-        <!-- Stats section title -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tình trạng phòng"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="8dp" />
-
-        <!-- Stats grid (2 columns using rows + weight) -->
-        <!-- Row 1 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp">
-
-            <!-- Total rooms -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:cardUseCompatPadding="true"
-                android:layout_marginEnd="10dp">
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
+                    android:text="Phòng đang bảo trì"
+                    android:textSize="16sp"
+                    android:layout_weight="1" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Tổng số phòng"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray" />
-
-                    <!-- ID phải khớp với Activity -->
-                    <TextView
-                        android:id="@+id/tvTotalRooms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_marginTop="6dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Booked rooms -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tvMaintenanceRooms"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Đã đặt"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray" />
-
-                    <!-- ID phải khớp với Activity -->
-                    <TextView
-                        android:id="@+id/tvBookedRooms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_marginTop="6dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                    android:text="0"
+                    android:textStyle="bold"
+                    android:textColor="@color/red" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!-- Row 2 -->
-        <LinearLayout
+        <!-- Nút xem chi tiết doanh thu -->
+        <Button
+            android:id="@+id/btnViewDetails"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp">
+            android:text="Xem chi tiết doanh thu"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/orange"
+            android:textAllCaps="false"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="24dp" />
 
-            <!-- Available rooms -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:cardUseCompatPadding="true"
-                android:layout_marginEnd="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Còn trống"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray" />
-
-                    <!-- ID phải khớp với Activity -->
-                    <TextView
-                        android:id="@+id/tvAvailableRooms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_marginTop="6dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Cleaning rooms -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:cardUseCompatPadding="true">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Đang dọn"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray" />
-
-                    <!-- ID phải khớp với Activity -->
-                    <TextView
-                        android:id="@+id/tvCleaningRooms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_marginTop="6dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-
-        <!-- Row 3 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="12dp">
-
-            <!-- Maintenance rooms -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="1dp"
-                app:cardUseCompatPadding="true"
-                android:layout_marginEnd="10dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="14dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Bảo trì"
-                        android:textSize="12sp"
-                        android:textColor="@android:color/darker_gray" />
-
-                    <!-- ID phải khớp với Activity -->
-                    <TextView
-                        android:id="@+id/tvMaintenanceRooms"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_marginTop="6dp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <!-- Spacer card (để cân đối 2 cột) -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                app:cardElevation="0dp"
-                app:cardUseCompatPadding="false"
-                app:cardCornerRadius="0dp"
-                android:visibility="invisible" />
-        </LinearLayout>
-
-        <!-- Actions -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Chức năng"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="8dp" />
-
-        <!-- ID phải khớp với Activity -->
+        <!-- Nút thêm địa điểm -->
         <Button
             android:id="@+id/btnAddPlace"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Thêm phòng / khu cho thuê"
-            android:allCaps="false"
-            android:layout_marginBottom="10dp" />
+            android:text="@string/owner_add_place_button"
+            android:backgroundTint="@color/purple_700"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:layout_marginBottom="16dp" />
 
-        <!-- ID phải khớp với Activity -->
-        <Button
-            android:id="@+id/btnOwnerMessages"
+        <!-- Các nút chức năng tin nhắn và portal -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tin nhắn"
-            android:allCaps="false"
-            android:layout_marginBottom="10dp" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="12dp">
 
-        <!-- ID phải khớp với Activity -->
-        <Button
-            android:id="@+id/btnOwnerPortal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Đăng xuất"
-            android:allCaps="false" />
+            <Button
+                android:id="@+id/btnOwnerMessages"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tin nhắn"
+                android:backgroundTint="@color/teal_700"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false" />
 
-        <!-- Bottom spacing -->
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="12dp" />
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btnOwnerPortal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Quay về Trang điều hướng"
+                android:backgroundTint="@color/purple_700"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false" />
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

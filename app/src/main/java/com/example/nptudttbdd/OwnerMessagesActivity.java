@@ -61,7 +61,7 @@ public class OwnerMessagesActivity extends AppCompatActivity {
         ImageView btnOwnerHome = findViewById(R.id.btnOwnerHome);
         btnBack.setOnClickListener(v -> finish());
         btnOwnerHome.setOnClickListener(v ->
-                startActivity(new Intent(OwnerMessagesActivity.this, OwnerPortalActivity.class))
+                startActivity(new Intent(OwnerMessagesActivity.this, OwnerDashboardActivity.class))
         );
 
         TextView tvChatTitle = findViewById(R.id.tvChatTitle);

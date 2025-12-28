@@ -29,7 +29,6 @@ public class RegisterActivity extends AppCompatActivity {
         etConfirmPassword = findViewById(R.id.edtConfirmPassword);
         etName = findViewById(R.id.edtFullName);
         btnRegister = findViewById(R.id.btnRegister);
-
         tvBackToLogin = findViewById(R.id.tvBackToLogin);
         radioRole = findViewById(R.id.radioRole);
         authManager = new FirebaseAuthManager();
@@ -42,18 +41,15 @@ public class RegisterActivity extends AppCompatActivity {
         if (!AuthInputValidator.ensureRequired(etName, "Vui lòng nhập họ tên!")) {
             return;
         }
-
         if (!AuthInputValidator.ensureValidEmail(
                 etEmail,
                 "Vui lòng nhập email!",
                 "Email không hợp lệ!")) {
             return;
         }
-
         if (!AuthInputValidator.ensureRequired(etPassword, "Vui lòng nhập mật khẩu!")) {
             return;
         }
-
         if (!AuthInputValidator.ensureRequired(etConfirmPassword, "Vui lòng xác nhận mật khẩu!")) {
             return;
         }
@@ -67,7 +63,6 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
         setProcessing(true);
-
         String email = AuthInputValidator.getTrimmedText(etEmail);
         String name = AuthInputValidator.getTrimmedText(etName);
         int selectedId = radioRole.getCheckedRadioButtonId();
@@ -77,23 +72,24 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onSuccess(@NonNull FirebaseUser firebaseUser, @NonNull UserProfile profile) {
                 if ("owner".equals(role)) {
-                    // Cập nhật thông tin role và approved trên Firebase Realtime Database
+                    // Cập nhật vai trò và approved=true trên Firebase
                     authManager.getUserProfileReference(firebaseUser.getUid())
                             .child("role").setValue("owner");
                     authManager.getUserProfileReference(firebaseUser.getUid())
-                            .child("approved").setValue(false);
+                            .child("approved").setValue(true);
                     // Cập nhật đối tượng profile trong ứng dụng
                     profile.setRole("owner");
-                    profile.setApproved(false);
-                    // Thêm tài khoản owner vào danh sách để Admin có thể thấy (locked = true ban đầu)
+                    profile.setApproved(true);
+                    // Thêm tài khoản owner vào danh sách (locked = false)
                     TravelDataRepository.getInstance(getApplicationContext())
-                            .addUser(new UserAccount(firebaseUser.getUid(), name, email, "", true));
+                            .addUser(new UserAccount(firebaseUser.getUid(), name, email, "", false));
                     Toast.makeText(RegisterActivity.this,
-                            "Đăng ký thành công! Vui lòng chờ quản trị viên phê duyệt tài khoản.",
-                            Toast.LENGTH_LONG).show();
+                            "Đăng ký thành công! Tài khoản owner đã được kích hoạt.",
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(RegisterActivity.this,
-                            "Đăng ký thành công!", Toast.LENGTH_SHORT).show();
+                            "Đăng ký thành công!",
+                            Toast.LENGTH_SHORT).show();
                 }
                 setProcessing(false);
                 finish();

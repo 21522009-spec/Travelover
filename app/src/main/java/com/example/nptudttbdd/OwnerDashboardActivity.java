@@ -16,6 +16,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.Query;
 
+import java.util.Calendar;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class OwnerDashboardActivity extends AppCompatActivity {
 
     @Override
@@ -25,7 +29,6 @@ public class OwnerDashboardActivity extends AppCompatActivity {
 
         // Greeting TextView for owner
         TextView tvWelcome = findViewById(R.id.tvOwnerWelcome);
-        // Display welcome message with owner's name
         String currentUid = FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
                 : "";
@@ -166,10 +169,59 @@ public class OwnerDashboardActivity extends AppCompatActivity {
     }
 
     private void showRevenueDetailDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.owner_revenue_dialog_title)
-                .setMessage(R.string.owner_revenue_dialog_message)
-                .setPositiveButton(android.R.string.ok, null)
-                .show();
+        String currentUid = FirebaseAuth.getInstance().getCurrentUser() != null
+                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
+                : "";
+        if (currentUid.isEmpty()) {
+            new AlertDialog.Builder(OwnerDashboardActivity.this)
+                    .setTitle("Doanh thu theo tháng")
+                    .setMessage("Chưa có dữ liệu doanh thu.")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+            return;
+        }
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        Query paymentsQuery = dbRef.child("Payments").orderByChild("ownerId").equalTo(currentUid);
+        paymentsQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot paymentsSnapshot) {
+                Map<String, Long> monthlyRevenue = new LinkedHashMap<>();
+                for (DataSnapshot paymentData : paymentsSnapshot.getChildren()) {
+                    Long amount = paymentData.child("amount").getValue(Long.class);
+                    Long timestamp = paymentData.child("timestamp").getValue(Long.class);
+                    if (amount != null && timestamp != null) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.setTimeInMillis(timestamp);
+                        int month = cal.get(Calendar.MONTH) + 1;
+                        int year = cal.get(Calendar.YEAR);
+                        String key = month + "/" + year;
+                        monthlyRevenue.put(key, monthlyRevenue.getOrDefault(key, 0L) + amount);
+                    }
+                }
+                if (monthlyRevenue.isEmpty()) {
+                    new AlertDialog.Builder(OwnerDashboardActivity.this)
+                            .setTitle("Doanh thu theo tháng")
+                            .setMessage("Chưa có dữ liệu doanh thu.")
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show();
+                } else {
+                    StringBuilder message = new StringBuilder();
+                    for (Map.Entry<String, Long> entry : monthlyRevenue.entrySet()) {
+                        message.append("Tháng ").append(entry.getKey()).append(": ")
+                                .append(TravelDataRepository.formatCurrency(entry.getValue()))
+                                .append("\n");
+                    }
+                    new AlertDialog.Builder(OwnerDashboardActivity.this)
+                            .setTitle("Doanh thu theo tháng")
+                            .setMessage(message.toString())
+                            .setPositiveButton(android.R.string.ok, null)
+                            .show();
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Handle error if needed
+            }
+        });
     }
 }

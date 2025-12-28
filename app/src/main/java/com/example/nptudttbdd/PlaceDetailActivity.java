@@ -2,6 +2,7 @@ package com.example.nptudttbdd;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
@@ -56,7 +57,15 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
-        imgPlace.setImageResource(place.getImageResId());
+        // Hiển thị ảnh: ưu tiên imagePath nếu có
+        String path = place.getImagePath();
+        if (path != null && !path.isEmpty()) {
+            // Nạp ảnh từ file đường dẫn
+            imgPlace.setImageBitmap(BitmapFactory.decodeFile(path));
+        } else {
+            imgPlace.setImageResource(place.getImageResId());
+        }
+
         tvPlaceName.setText(place.getName());
         tvLocation.setText(place.getLocation());
         updateRatingSection();

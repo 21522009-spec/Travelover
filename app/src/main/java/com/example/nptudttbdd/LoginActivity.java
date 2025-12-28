@@ -147,12 +147,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(LoginActivity.this, AdminDashboardActivity.class));
         finish();
     }
-
-    private void openOwnerPortal() {
-        Toast.makeText(this, R.string.owner_login_success, Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(LoginActivity.this, OwnerPortalActivity.class));
-        finish();
-    }
 }
 
 
