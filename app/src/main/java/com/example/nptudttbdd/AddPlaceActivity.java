@@ -37,8 +37,8 @@ public class AddPlaceActivity extends AppCompatActivity implements ImagePreviewA
 
     private static final int REQ_PICK_IMAGES = 2101;
 
-    // Without Firebase Storage, we embed images as compressed Base64 (data URI) in Realtime Database.
-    // Keep the number of images small for performance.
+    // Tạm thời chưa làm được firebase storage
+    // Giải pháp tạm thời: File ảnh nhỏ để tạm giải quyết và làm trên local.
     private static final int MAX_IMAGES = 5;
     private static final int MAX_DIMENSION = 1024;
     private static final int MAX_BYTES_PER_IMAGE = 350 * 1024;
