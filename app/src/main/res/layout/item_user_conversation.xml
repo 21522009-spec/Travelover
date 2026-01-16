@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@android:color/white"
+    android:paddingHorizontal="12dp"
+    android:paddingVertical="10dp">
+
+    <ImageView
+        android:id="@+id/imgAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_circle_orange"
+        android:padding="6dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/default_avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tvConversationTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#212121"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/imgAvatar"
+        app:layout_constraintTop_toTopOf="@id/imgAvatar"
+        app:layout_constraintEnd_toStartOf="@id/tvTime"
+        tools:text="Chủ phòng" />
+
+    <TextView
+        android:id="@+id/tvLastMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#616161"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/tvConversationTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvConversationTitle"
+        app:layout_constraintEnd_toStartOf="@id/tvTime"
+        tools:text="Tin nhắn gần nhất..." />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#757575"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvConversationTitle"
+        tools:text="15:46" />
+
+    <View
+        android:id="@+id/viewUnreadDot"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_circle_orange"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/tvTime"
+        app:layout_constraintTop_toBottomOf="@id/tvTime" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
