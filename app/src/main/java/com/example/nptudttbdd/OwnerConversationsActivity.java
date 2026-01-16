@@ -78,12 +78,19 @@ public class OwnerConversationsActivity extends AppCompatActivity {
                     String title = convSnapshot.child("title").getValue(String.class);
                     String lastMessage = convSnapshot.child("lastMessage").getValue(String.class);
                     String lastTime = convSnapshot.child("lastTime").getValue(String.class);
-                    Boolean hasNewMessage = convSnapshot.child("hasNewMessage").getValue(Boolean.class);
-                    if (convId == null || title == null || lastMessage == null || lastTime == null) {
+                    // New schema (recommended)
+                    Boolean hasNewForOwner = convSnapshot.child("hasNewForOwner").getValue(Boolean.class);
+                    // Backward compatibility
+                    Boolean hasNewLegacy = convSnapshot.child("hasNewMessage").getValue(Boolean.class);
+
+                    if (convId == null || title == null) {
                         continue;
                     }
-                    // If hasNewMessage is null, treat as false
-                    boolean unread = hasNewMessage != null && hasNewMessage;
+                    if (lastMessage == null) lastMessage = "";
+                    if (lastTime == null) lastTime = "";
+
+                    boolean unread = (hasNewForOwner != null && hasNewForOwner)
+                            || (hasNewLegacy != null && hasNewLegacy);
                     OwnerConversation conversation = new OwnerConversation(convId, title, lastMessage, lastTime, unread);
                     conversationList.add(conversation);
                 }

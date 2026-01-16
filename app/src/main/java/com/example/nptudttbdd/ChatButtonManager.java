@@ -11,6 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public final class ChatButtonManager {
 
@@ -37,11 +43,43 @@ public final class ChatButtonManager {
                                         @NonNull FloatingActionButton chatButton) {
         chatButton.setOnClickListener(v -> {
             if (activity instanceof OwnerMessagesActivity
-                    || activity instanceof OwnerConversationsActivity) {
+                    || activity instanceof OwnerConversationsActivity
+                    || activity instanceof UserMessagesActivity
+                    || activity instanceof UserConversationsActivity) {
                 return;
             }
-            Intent intent = new Intent(activity, OwnerConversationsActivity.class);
-            activity.startActivity(intent);
+
+            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                // Not logged in
+                return;
+            }
+
+            String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users")
+                    .child(uid)
+                    .child("role");
+            // Decide navigation based on role stored in Users/{uid}/role
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String role = snapshot.getValue(String.class);
+                    if (role == null) role = "user";
+                    Intent intent;
+                    if ("owner".equalsIgnoreCase(role)) {
+                        intent = new Intent(activity, OwnerConversationsActivity.class);
+                    } else {
+                        intent = new Intent(activity, UserConversationsActivity.class);
+                    }
+                    activity.startActivity(intent);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    // Fallback: open user conversations
+                    Intent intent = new Intent(activity, UserConversationsActivity.class);
+                    activity.startActivity(intent);
+                }
+            });
         });
     }
 

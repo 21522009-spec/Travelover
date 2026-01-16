@@ -39,6 +39,8 @@
         <activity android:name=".OwnerDashboardActivity" />
         <activity android:name=".OwnerConversationsActivity" />
         <activity android:name=".OwnerMessagesActivity" />
+        <activity android:name=".UserConversationsActivity" />
+        <activity android:name=".UserMessagesActivity" />
         <activity android:name=".FavoritePlacesActivity" />
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".PaymentActivity" />

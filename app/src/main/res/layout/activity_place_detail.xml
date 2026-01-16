@@ -150,6 +150,17 @@
                 android:layout_marginTop="8dp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnChatOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chat_owner"
+                android:backgroundTint="@android:color/white"
+                android:textColor="#FF9900"
+                android:strokeColor="#FF9900"
+                android:strokeWidth="1"
+                android:layout_marginTop="8dp" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnWriteReview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

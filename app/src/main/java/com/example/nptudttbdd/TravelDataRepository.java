@@ -64,7 +64,7 @@ public final class TravelDataRepository {
     }
 
     /**
-     * Add or replace place by id. Used for syncing dynamic places (e.g., from Firebase).
+     * Thêm hoặc thay thế Place (sử dụng id Firebase).
      */
     public void upsertPlace(@NonNull Place place) {
         for (int i = 0; i < places.size(); i++) {

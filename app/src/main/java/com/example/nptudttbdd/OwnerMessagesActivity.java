@@ -77,7 +77,8 @@ public class OwnerMessagesActivity extends AppCompatActivity {
         EditText edtMessage = findViewById(R.id.edtMessage);
         ImageButton btnSend = findViewById(R.id.btnSend);
 
-        // Mark conversation as read (no new message) when opening
+        // Mark conversation as read for OWNER when opening
+        conversationRef.child("hasNewForOwner").setValue(false);
         conversationRef.child("hasNewMessage").setValue(false);
 
         // Listen for conversation messages in real-time
@@ -90,6 +91,20 @@ public class OwnerMessagesActivity extends AppCompatActivity {
                     String senderStr = msgSnapshot.child("sender").getValue(String.class);
                     String content = msgSnapshot.child("message").getValue(String.class);
                     Long time = msgSnapshot.child("timestamp").getValue(Long.class);
+                    // Backward compatibility: allow {text} field
+                    if (content == null) {
+                        content = msgSnapshot.child("text").getValue(String.class);
+                    }
+                    if (senderStr == null) {
+                        // If only senderId exists, infer (best effort)
+                        String senderId = msgSnapshot.child("senderId").getValue(String.class);
+                        if (FirebaseAuth.getInstance().getCurrentUser() != null
+                                && FirebaseAuth.getInstance().getCurrentUser().getUid().equals(senderId)) {
+                            senderStr = "OWNER";
+                        } else {
+                            senderStr = "USER";
+                        }
+                    }
                     if (content == null || senderStr == null) {
                         continue;
                     }
@@ -141,14 +156,22 @@ public class OwnerMessagesActivity extends AppCompatActivity {
             msgData.put("sender", "OWNER");
             msgData.put("message", content);
             msgData.put("timestamp", System.currentTimeMillis());
+            // Optional fields for future use
+            msgData.put("senderId", FirebaseAuth.getInstance().getCurrentUser().getUid());
+            msgData.put("text", content);
             // Send message
             newMsgRef.setValue(msgData);
             // Update conversation metadata
-            conversationRef.child("lastMessage").setValue(content);
             // Format current time as "HH:mm"
             String timeStr = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
-            conversationRef.child("lastTime").setValue(timeStr);
-            conversationRef.child("hasNewMessage").setValue(false);
+            Map<String, Object> updates = new HashMap<>();
+            updates.put("lastMessage", content);
+            updates.put("lastTime", timeStr);
+            updates.put("lastTimestamp", System.currentTimeMillis());
+            updates.put("hasNewForOwner", false);
+            updates.put("hasNewForUser", true);
+            updates.put("hasNewMessage", true);
+            conversationRef.updateChildren(updates);
             // Clear input field
             edtMessage.setText(null);
         });

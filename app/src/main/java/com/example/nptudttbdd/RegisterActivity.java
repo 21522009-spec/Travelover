@@ -71,7 +71,7 @@ public class RegisterActivity extends AppCompatActivity {
         authManager.registerUser(name, email, password, new FirebaseAuthManager.RegisterCallback() {
             @Override
             public void onSuccess(@NonNull FirebaseUser firebaseUser, @NonNull UserProfile profile) {
-                if ("owner".equals(role)) {
+                    if ("owner".equals(role)) {
                     // Cập nhật vai trò và approved=true trên Firebase
                     authManager.getUserProfileReference(firebaseUser.getUid())
                             .child("role").setValue("owner");
@@ -86,11 +86,17 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this,
                             "Đăng ký thành công! Tài khoản owner đã được kích hoạt.",
                             Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(RegisterActivity.this,
-                            "Đăng ký thành công!",
-                            Toast.LENGTH_SHORT).show();
-                }
+                    } else {
+                        // For regular users, mark as approved and add to local repository
+                        authManager.getUserProfileReference(firebaseUser.getUid())
+                                .child("approved").setValue(true);
+                        TravelDataRepository.getInstance(getApplicationContext())
+                                .addUser(new UserAccount(firebaseUser.getUid(),
+                                        name, email, "", false));
+                        Toast.makeText(RegisterActivity.this,
+                                "Đăng ký thành công!",
+                                Toast.LENGTH_SHORT).show();
+                    }
                 setProcessing(false);
                 finish();
             }

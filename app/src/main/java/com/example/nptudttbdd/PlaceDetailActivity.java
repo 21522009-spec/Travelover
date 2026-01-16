@@ -14,6 +14,19 @@ import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import androidx.annotation.NonNull;
+
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.Locale;
 
@@ -51,6 +64,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         tvRatingValue = findViewById(R.id.tvRatingValue);
         TextView tvDescription = findViewById(R.id.tvDescription);
         MaterialButton btnBookRoom = findViewById(R.id.btnBookRoom);
+        MaterialButton btnChatOwner = findViewById(R.id.btnChatOwner);
         MaterialButton btnWriteReview = findViewById(R.id.btnWriteReview);
         btnFavorite = findViewById(R.id.btnFavorite);
 
@@ -93,10 +107,91 @@ public class PlaceDetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        btnChatOwner.setOnClickListener(v -> startChatWithOwner());
+
         btnWriteReview.setOnClickListener(v -> {
             Intent intent = new Intent(PlaceDetailActivity.this, ReviewActivity.class);
             intent.putExtra(ReviewActivity.EXTRA_PLACE_ID, place.getId());
             startActivity(intent);
+        });
+    }
+
+    private void startChatWithOwner() {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Toast.makeText(this, "Vui lòng đăng nhập để nhắn tin.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String placeId = place.getId();
+
+        // Get ownerId from Firebase Places/{placeId}/ownerId
+        DatabaseReference ownerIdRef = FirebaseDatabase.getInstance()
+                .getReference("Places")
+                .child(placeId)
+                .child("ownerId");
+
+        ownerIdRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String ownerId = snapshot.getValue(String.class);
+                if (ownerId == null || ownerId.isEmpty()) {
+                    Toast.makeText(PlaceDetailActivity.this,
+                            "Không tìm thấy chủ phòng trên Firebase cho địa điểm này.",
+                            Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                String conversationId = placeId + "_" + userId;
+                DatabaseReference conversationRef = FirebaseDatabase.getInstance()
+                        .getReference("Conversations")
+                        .child(conversationId);
+
+                conversationRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot convSnap) {
+                        if (!convSnap.exists()) {
+                            // Create new conversation
+                            String title = "Chat phòng: " + place.getName();
+                            long now = System.currentTimeMillis();
+                            String timeStr = new SimpleDateFormat("HH:mm", Locale.getDefault())
+                                    .format(new Date());
+
+                            Map<String, Object> convData = new HashMap<>();
+                            convData.put("userId", userId);
+                            convData.put("ownerId", ownerId);
+                            convData.put("placeId", placeId);
+                            convData.put("title", title);
+                            convData.put("lastMessage", "");
+                            convData.put("lastTime", timeStr);
+                            convData.put("lastTimestamp", now);
+                            convData.put("hasNewForOwner", false);
+                            convData.put("hasNewForUser", false);
+                            convData.put("hasNewMessage", false);
+                            conversationRef.setValue(convData);
+                        }
+
+                        // Open user chat screen
+                        Intent intent = new Intent(PlaceDetailActivity.this, UserMessagesActivity.class);
+                        intent.putExtra(UserMessagesActivity.EXTRA_CONVERSATION_ID, conversationId);
+                        intent.putExtra(UserMessagesActivity.EXTRA_CONVERSATION_TITLE,
+                                "Chat phòng: " + place.getName());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(PlaceDetailActivity.this,
+                                "Không thể tạo hội thoại. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(PlaceDetailActivity.this,
+                        "Không thể lấy thông tin chủ phòng. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

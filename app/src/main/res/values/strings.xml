@@ -2,6 +2,7 @@
     <string name="app_name">Travelover</string>
     <string name="message_no_search_result">Không tìm thấy địa điểm phù hợp với từ khóa.</string>
     <string name="message_error_empty">Vui lòng nhập nội dung trước khi gửi.</string>
+    <string name="message_hint">Nhập tin nhắn...</string>
     <string name="chat_button_content_description">Mở trò chuyện</string>
 
     <string name="home_title">Khám phá địa điểm tuyệt vời</string>
@@ -73,6 +74,15 @@ SĐT: %2$s</string>
     <string name="owner_conversation_more">Tùy chọn khác</string>
     <string name="owner_conversation_tab_conversations">HỘI THOẠI</string>
     <string name="owner_conversation_tab_contacts">DANH BẠ</string>
+
+    <!-- USER conversations -->
+    <string name="user_conversation_title">Tin nhắn</string>
+    <string name="user_conversation_search">Tìm kiếm</string>
+    <string name="user_conversation_more">Tùy chọn khác</string>
+    <string name="user_conversation_tab_conversations">HỘI THOẠI</string>
+    <string name="user_conversation_tab_contacts">DANH BẠ</string>
+
+    <string name="chat_owner">Nhắn tin chủ phòng</string>
 
     <string name="profile_update_success">Đã lưu thông tin hồ sơ.</string>
     <string name="profile_update_error">Không thể cập nhật hồ sơ. Vui lòng thử lại.</string>
